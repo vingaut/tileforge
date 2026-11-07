@@ -75,6 +75,7 @@ class MainWindow(QMainWindow):
         # -- aide interactive
         self.help = HelpController(self, int(self.settings.get("help_delay_ms", 2000)))
         self.help.on_enabled_changed(self._on_help_mode_changed)
+        bind(self.act_import_rom, "app.import_rom")
         bind(self.act_help_mode, "app.help_mode")
         bind(self.act_help, "app.help")
         bind(self.act_updates, "app.updates")
@@ -136,6 +137,15 @@ class MainWindow(QMainWindow):
                                 "Ouvrir un projet…", self)
         self.act_open.setShortcut(QKeySequence.Open)
         self.act_open.triggered.connect(self.open_project)
+
+        self.act_import_rom = QAction(
+            self._icon(QStyle.SP_DriveHDIcon),
+            "Importer une ROM ou une archive…", self)
+        self.act_import_rom.setShortcut("Ctrl+Shift+O")
+        self.act_import_rom.setStatusTip(
+            "Ouvre une ROM, un zip/7z ou une banque brute : offset, format "
+            "et compression se règlent dans le dialogue.")
+        self.act_import_rom.triggered.connect(self.import_rom)
 
         self.act_save = QAction(self._icon(QStyle.SP_DialogSaveButton),
                                 "Enregistrer", self)
@@ -232,6 +242,7 @@ class MainWindow(QMainWindow):
         f = m.addMenu("&Fichier")
         f.addAction(self.act_new)
         f.addAction(self.act_open)
+        f.addAction(self.act_import_rom)
         self.menu_recent = f.addMenu("Ouvrir récemment")
         self._fill_recent_menu()
         f.addSeparator()
@@ -328,6 +339,7 @@ class MainWindow(QMainWindow):
         self.main_toolbar = tb
         tb.addAction(self.act_new)
         tb.addAction(self.act_open)
+        tb.addAction(self.act_import_rom)
         tb.addAction(self.act_save)
         tb.addSeparator()
         tb.addAction(self.act_undo)
@@ -504,6 +516,11 @@ class MainWindow(QMainWindow):
         self.assembly.group_index = 0
         self.refresh_all()
         self.show_message("Nouveau projet.")
+
+    def import_rom(self) -> None:
+        """Ouvre une ROM, une archive ou une banque brute."""
+        self.tabs.setCurrentIndex(0)
+        self.sheet_view.open_raw()
 
     def open_project(self) -> None:
         if not self._confirm_discard():

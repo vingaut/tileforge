@@ -40,6 +40,11 @@ HELP: dict[str, HelpEntry] = {
     "app.open": HelpEntry(
         "Ouvrir un projet", "Recharge un fichier .tileforge.json : planche, tuiles, "
         "sprites, atlas, journal et recettes.", "Ctrl+O", "demarrage"),
+    "app.import_rom": HelpEntry(
+        "Importer une ROM ou une archive", "Ouvre une ROM, un fichier zip/7z ou "
+        "une banque brute. Le dialogue permet de choisir l'offset, le format de "
+        "tuile et la compression ; c'est le point d'entrée pour un jeu autre que "
+        "Barbarian.", "Ctrl+Maj+O", "demarrage"),
     "app.save": HelpEntry(
         "Enregistrer", "Écrit le projet sur disque. La planche est embarquée dans le "
         "fichier, il reste donc lisible sans la ROM d'origine.", "Ctrl+S", "demarrage"),
@@ -341,6 +346,8 @@ HELP: dict[str, HelpEntry] = {
 TEXT_TO_KEY: dict[str, str] = {
     "Nouveau projet": "app.new",
     "Ouvrir un projet": "app.open",
+    "Importer une ROM ou une archive…": "app.import_rom",
+    "Ouvrir une ROM / archive…": "app.import_rom",
     "Enregistrer": "app.save",
     "Enregistrer sous…": "app.save_as",
     "Annuler": "app.undo",

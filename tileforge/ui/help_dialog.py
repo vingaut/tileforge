@@ -166,14 +166,14 @@ class WelcomeDialog(QDialog):
         root.addWidget(intro)
 
         for text, action, hint in (
-            ("Ouvrir la disquette Barbarian (.stx)", "barbarian",
-             "le cas d'école : 252 tuiles de 24 × 21 px, prêtes à assembler"),
+            ("Ouvrir une ROM ou une archive…", "raw",
+             "ROM, zip/7z, ou banque brute avec offset et format"),
             ("Ouvrir une planche PNG", "png", "une planche déjà rendue"),
-            ("Ouvrir une banque brute de ROM", "raw",
-             "fichier binaire, offset et format de tuile"),
+            ("Cas d'école : Barbarian (.stx)", "barbarian",
+             "252 tuiles de 24 × 21 px, prêtes à assembler"),
         ):
             button = QPushButton(text)
-            button.setProperty("accent", action == "barbarian")
+            button.setProperty("accent", action == "raw")
             button.setMinimumHeight(34)
             button.clicked.connect(lambda _c=False, a=action: self._choose(a))
             root.addWidget(button)

@@ -7,8 +7,8 @@ publié par ``tools/make_update.py``.
 
 from __future__ import annotations
 
-__version__ = "1.4.0"
-VERSION_TUPLE = (1, 4, 0)
+__version__ = "1.4.1"
+VERSION_TUPLE = (1, 4, 1)
 BUILD_DATE = "2026-11-07"
 APP_NAME = "TileForge"
 APP_ID = "tileforge"
@@ -17,6 +17,19 @@ MIN_PYTHON = (3, 10)
 
 #: Journal des évolutions, du plus récent au plus ancien.
 CHANGELOG: list[dict] = [
+    {
+        "version": "1.4.1",
+        "date": "2026-11-08",
+        "title": "Import d'une ROM ou d'une archive depuis l'accueil",
+        "changes": [
+            "Bouton « Ouvrir une ROM / archive… » en tête de l'écran Planche.",
+            "Action Fichier ▸ Importer une ROM ou une archive… (Ctrl+Maj+O) et "
+            "bouton dans la barre d'outils.",
+            "Écran d'accueil : la ROM/archive est proposée en premier, Barbarian "
+            "devient un cas d'école secondaire.",
+            "Traductions anglaises et allemandes des nouveaux textes.",
+        ],
+    },
     {
         "version": "1.4.0",
         "date": "2026-11-08",

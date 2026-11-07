@@ -238,5 +238,16 @@
  "Membre": "Archivdatei",
  "Dossier système": "Systemordner",
  "Choisir le dossier système": "Systemordner wählen",
- "dossier des BIOS/firmwares (Fuse, VICE, Cap32…)": "BIOS-/Firmware-Ordner (Fuse, VICE, Cap32…)"
+ "dossier des BIOS/firmwares (Fuse, VICE, Cap32…)": "BIOS-/Firmware-Ordner (Fuse, VICE, Cap32…)",
+ "Ouvrir une ROM ou une archive…": "ROM oder Archiv öffnen…",
+ "Importer une ROM ou une archive…": "ROM oder Archiv importieren…",
+ "Banque brute (offset)…": "Rohbank (Offset)…",
+ "Même dialogue que ci-dessus, pour régler l'offset à la main.": "Gleicher Dialog wie oben, um den Offset manuell einzustellen.",
+ "Ouvre une ROM, un zip/7z ou une banque brute : offset, format et compression se règlent dans le dialogue.": "Öffnet eine ROM, ein ZIP/7z oder eine Rohbank: Offset, Format und Kompression werden im Dialog eingestellt.",
+ "Ouvre une ROM, une archive zip/7z, ou une banque brute : choisissez ensuite l'offset, le format et la compression.": "Öffnet eine ROM, ein ZIP/7z-Archiv oder eine Rohbank: Wählen Sie dann Offset, Format und Kompression.",
+ "ROM, archive zip/7z, PNG ou disquette ST : choisissez le fichier, puis l'offset et le format.": "ROM, ZIP/7z-Archiv, PNG oder ST-Diskette: Datei wählen, dann Offset und Format.",
+ "ROM, zip/7z, ou banque brute avec offset et format": "ROM, ZIP/7z oder Rohbank mit Offset und Format",
+ "Cas d'école : Barbarian (.stx)": "Fallbeispiel: Barbarian (.stx)",
+ "252 tuiles de 24 × 21 px, prêtes à assembler": "252 Kacheln à 24 × 21 px, bereit zum Zusammensetzen",
+ "Ouvrir une ROM / archive…": "ROM / Archiv öffnen…"
 }

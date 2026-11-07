@@ -562,10 +562,22 @@ class SheetView(QWidget):
         self.source_label = hint_label("Aucune planche chargée.")
         self.form.addWidget(self.source_label)
 
+        btn_rom = QPushButton("Ouvrir une ROM / archive…")
+        btn_rom.setProperty("accent", True)
+        btn_rom.setToolTip(
+            "Ouvre une ROM, une archive zip/7z, ou une banque brute : "
+            "choisissez ensuite l'offset, le format et la compression.")
+        btn_rom.clicked.connect(self.open_raw)
+        self.form.addWidget(btn_rom)
+        self.form.addWidget(hint_label(
+            "ROM, archive zip/7z, PNG ou disquette ST : choisissez le fichier, "
+            "puis l'offset et le format."))
+
         row = QHBoxLayout()
         btn_png = QPushButton("Image PNG…")
         btn_png.clicked.connect(self.open_png)
-        btn_raw = QPushButton("Banque brute…")
+        btn_raw = QPushButton("Banque brute (offset)…")
+        btn_raw.setToolTip("Même dialogue que ci-dessus, pour régler l'offset à la main.")
         btn_raw.clicked.connect(self.open_raw)
         row.addWidget(btn_png)
         row.addWidget(btn_raw)

@@ -238,5 +238,16 @@
  "Membre": "Archive member",
  "Dossier système": "System folder",
  "Choisir le dossier système": "Choose the system folder",
- "dossier des BIOS/firmwares (Fuse, VICE, Cap32…)": "BIOS/firmware folder (Fuse, VICE, Cap32…)"
+ "dossier des BIOS/firmwares (Fuse, VICE, Cap32…)": "BIOS/firmware folder (Fuse, VICE, Cap32…)",
+ "Ouvrir une ROM ou une archive…": "Open a ROM or archive…",
+ "Importer une ROM ou une archive…": "Import a ROM or archive…",
+ "Banque brute (offset)…": "Raw bank (offset)…",
+ "Même dialogue que ci-dessus, pour régler l'offset à la main.": "Same dialog as above, to set the offset manually.",
+ "Ouvre une ROM, un zip/7z ou une banque brute : offset, format et compression se règlent dans le dialogue.": "Opens a ROM, zip/7z or raw bank: offset, format and compression are set in the dialog.",
+ "Ouvre une ROM, une archive zip/7z, ou une banque brute : choisissez ensuite l'offset, le format et la compression.": "Opens a ROM, a zip/7z archive or a raw bank: then choose the offset, format and compression.",
+ "ROM, archive zip/7z, PNG ou disquette ST : choisissez le fichier, puis l'offset et le format.": "ROM, zip/7z archive, PNG or ST disk: choose the file, then the offset and format.",
+ "ROM, zip/7z, ou banque brute avec offset et format": "ROM, zip/7z, or raw bank with offset and format",
+ "Cas d'école : Barbarian (.stx)": "Case study: Barbarian (.stx)",
+ "252 tuiles de 24 × 21 px, prêtes à assembler": "252 tiles of 24 × 21 px, ready to assemble",
+ "Ouvrir une ROM / archive…": "Open a ROM / archive…"
 }

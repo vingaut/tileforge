@@ -8,7 +8,7 @@ Il charge une planche (PNG ou banque binaire extraite d'une ROM), découpe les
 tuiles, propose un classement d'assemblages automatiques, laisse corriger à la
 souris, produit un atlas et exporte les données pour analyse.
 
-Version **1.4** : recherche de graphismes, notation calibrée, cartographie de
+Version **1.4.1** : recherche de graphismes, notation calibrée, cartographie de
 ROM, désassembleurs 6502, Z80, 68000 et 65816, mémoire d'émulateur, interface
 en trois langues.
 
@@ -67,7 +67,8 @@ avec `python tools/fetch_cores.py` ; aucun BIOS copyrighté n'est fourni.
 Le dépôt contient une planche synthétique, `docs/planche_demo.png` : elle ne
 provient d'aucun jeu et permet d'essayer l'outil immédiatement.
 
-1. Onglet **Planche** → **Image PNG…** → `docs/planche_demo.png`.
+1. Onglet **Planche** → **Ouvrir une ROM / archive…** pour un jeu, ou
+   **Image PNG…** → `docs/planche_demo.png` pour la démonstration.
 2. L'outil détecte une grille de 16 × 16 ; les tuiles sont numérotées.
 3. Onglet **Atelier** → grille **2 × 4** → **« Assemblage automatique… »** →
    *Tout essayer* → double-clic sur un résultat pour le charger.
