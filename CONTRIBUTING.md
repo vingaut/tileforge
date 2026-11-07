@@ -18,7 +18,7 @@ Le cœur (`core`, `detect`, `assemble`) et le serveur MCP fonctionnent sans Qt.
 Seule l'interface en a besoin : `pip install -e ".[dev]"` suffit pour les tests.
 
 ```bash
-.venv/bin/python tests/run_all.py      # 216 tests, sans interface
+.venv/bin/python tests/run_all.py      # 217 tests, sans interface
 .venv/bin/python -m tileforge          # l'application
 .venv/bin/python -m tileforge --selftest
 ```

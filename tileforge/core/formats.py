@@ -25,7 +25,7 @@ Dispositions gérées
 ``seq_plane_pairs``
     Variante « paires de plans » avec 2 pixels par octet (PC Engine).
 ``nibble``
-    Un octet = 2 pixels, quartet haut = pixel de gauche (Mega Drive).
+    Un octet = 2 pixels, quartet haut = pixel de gauche (GBA, PC Engine).
 ``chunky``
     Un octet = 1 pixel indexé (8 bits) ou 2 pixels (4 bits).
 ``cpc``
@@ -349,15 +349,17 @@ FORMATS: tuple[TileFormat, ...] = (
                notes="Quatre paires de plans entrelacées (256 couleurs).",
                system_key="snes", palette_key="generic16", transparent_index=0),
     TileFormat("master_system", "Master System / Game Gear — 8x8, 4 plans", 8, 8, 4,
-               "row_planes_bytes", 32, notes="Même disposition que la SNES 4bpp.",
+               "row_planes_bytes", 32,
+               notes="4 octets par ligne, un par plan (comme la Mega Drive).",
                system_key="master-system", palette_key="sms", transparent_index=0),
     TileFormat("megadrive", "Mega Drive / Genesis — 8x8, 4 plans", 8, 8, 4,
-               "nibble", 32, notes="1 octet = 2 pixels, quartet haut à gauche.",
+               "row_planes_bytes", 32,
+               notes="4 octets par ligne, un par plan, bit 7 = pixel de gauche.",
                system_key="mega-drive", palette_key="megadrive", transparent_index=0),
     TileFormat("gba_4bpp", "Game Boy Advance — 8x8, 4 bits", 8, 8, 4,
                "nibble", 32,
-               notes="Deux pixels par octet, quartet bas à gauche (contrairement "
-               "à la Mega Drive). 16 couleurs par palette.",
+               notes="Deux pixels par octet, quartet bas à gauche. "
+               "16 couleurs par palette.",
                system_key="game-boy-advance", palette_key="generic16",
                transparent_index=0, bit_order="lsb"),
     TileFormat("gba_8bpp", "Game Boy Advance — 8x8, 8 bits", 8, 8, 8,
@@ -413,7 +415,7 @@ LAYOUTS = (
     ("row_planes_words", "Plans entrelacés par ligne (mots 16 bits)"),
     ("seq_planes_bytes", "Plans séquentiels (NES, GB)"),
     ("seq_plane_pairs", "Paires de plans, 2 px/octet (PC Engine)"),
-    ("nibble", "Quartets, 2 px/octet (Mega Drive)"),
+    ("nibble", "Quartets, 2 px/octet (GBA)"),
     ("chunky", "Indexé, pixels entiers (chunky)"),
     ("cpc", "Entrelacement Amstrad CPC"),
 )

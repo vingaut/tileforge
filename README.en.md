@@ -104,7 +104,7 @@ tile profile and proposes compatible machines.
 
 ## 5. Raw bank formats
 
-25 tile-format presets: SNES (2, 3, 4, 8 bpp), Mega Drive nibbles, Game Boy
+25 tile-format presets: SNES (2, 3, 4, 8 bpp), Mega Drive (4bpp planar), Game Boy
 Advance (4 and 8 bpp), NES, Game Boy, Master System, PC Engine, Neo Geo, CPS-1,
 Atari ST (Barbarian, sprites), Amiga, CPC modes 0/1/2, ZX Spectrum, C64,
 chunky 4/8 bpp. A **Custom** mode

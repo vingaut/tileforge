@@ -79,15 +79,36 @@ def test_snes_3bpp():
     assert np.array_equal(decoded, pixels), decoded
 
 
-def test_megadrive_nibbles():
-    fmt = FORMATS_BY_KEY["megadrive"]
-    pixels = _pixels()
+def _encode_planar(pixels: np.ndarray, planes: int = 4) -> bytes:
+    """Encode une tuile 8x8 en plans entrelacés par ligne (Mega Drive, SMS)."""
     out = bytearray()
     for y in range(8):
-        for i in range(4):
-            out.append((int(pixels[y, 2 * i]) << 4) | int(pixels[y, 2 * i + 1]))
-    decoded = fmt.decode(bytes(out))
+        for plane in range(planes):
+            byte = 0
+            for x in range(8):
+                if (int(pixels[y, x]) >> plane) & 1:
+                    byte |= 0x80 >> x
+            out.append(byte)
+    return bytes(out)
+
+
+def test_megadrive_planar():
+    """La Mega Drive est planaire (4 octets/ligne), pas en quartets."""
+    fmt = FORMATS_BY_KEY["megadrive"]
+    pixels = _pixels()
+    data = _encode_planar(pixels)
+    assert len(data) == 32, len(data)
+    decoded = fmt.decode(data)
     assert np.array_equal(decoded, pixels), decoded
+
+
+def test_megadrive_et_master_system_meme_disposition():
+    """MD et Master System partagent le même encodage de tuiles."""
+    md = FORMATS_BY_KEY["megadrive"]
+    sms = FORMATS_BY_KEY["master_system"]
+    assert md.layout == sms.layout == "row_planes_bytes"
+    data = _encode_planar(_pixels())
+    assert np.array_equal(md.decode(data), sms.decode(data))
 
 
 def test_atari_st_barbarian():

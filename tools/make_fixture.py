@@ -158,8 +158,12 @@ def sprite_tiles(count: int, seed: int = 1, size: int = 8) -> bytes:
             for row in tile:
                 row[0] = 0
         for y in range(size):
-            for x in range(0, size, 2):
-                out.append((tile[y][x] << 4) | tile[y][x + 1])
+            for plane in range(4):
+                byte = 0
+                for x in range(size):
+                    if (tile[y][x] >> plane) & 1:
+                        byte |= 0x80 >> x
+                out.append(byte)
     return bytes(out)
 
 

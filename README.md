@@ -218,7 +218,7 @@ Le catalogue `tileforge/core/systems.py` contient 76 machines :
 | `nes` / `gameboy` | 8×8 | 2 | plans séquentiels |
 | `snes_2bpp` / `4bpp` / `8bpp` | 8×8 | 2 / 4 / 8 | plans par ligne |
 | `master_system` | 8×8 | 4 | plans par ligne |
-| `megadrive` | 8×8 | 4 | quartets, 2 px/octet |
+| `megadrive` | 8×8 | 4 | plans par ligne |
 | `gba_4bpp` | 8×8 | 4 | quartets, 2 px/octet, quartet bas à gauche |
 | `gba_8bpp` | 8×8 | 8 | pixels indexés |
 | `pc_engine` | 8×8 | 4 | paires de plans, 2 px/octet |

@@ -38,10 +38,15 @@ def _encode_snes(pixels: np.ndarray, bpp: int) -> bytes:
 
 
 def _encode_megadrive(pixels: np.ndarray) -> bytes:
+    """Mega Drive : 4 plans, un octet par plan et par ligne."""
     out = bytearray()
     for y in range(8):
-        for i in range(4):
-            out.append((int(pixels[y, 2 * i]) << 4) | int(pixels[y, 2 * i + 1]))
+        for plane in range(4):
+            byte = 0
+            for x in range(8):
+                if (int(pixels[y, x]) >> plane) & 1:
+                    byte |= 0x80 >> x
+            out.append(byte)
     return bytes(out)
 
 

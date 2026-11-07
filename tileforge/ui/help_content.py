@@ -563,7 +563,7 @@ Le décodage dépend de la machine.</p>
 <tr><td>nes / gameboy</td><td>8×8</td><td>2</td><td>plans séquentiels</td></tr>
 <tr><td>snes_2bpp / 4bpp / 8bpp</td><td>8×8</td><td>2/4/8</td><td>plans par ligne</td></tr>
 <tr><td>master_system</td><td>8×8</td><td>4</td><td>plans par ligne</td></tr>
-<tr><td>megadrive</td><td>8×8</td><td>4</td><td>quartets, 2 px/octet</td></tr>
+<tr><td>megadrive</td><td>8×8</td><td>4</td><td>plans par ligne</td></tr>
 <tr><td>pc_engine</td><td>8×8</td><td>4</td><td>paires de plans</td></tr>
 <tr><td>neo_geo / cps1</td><td>16×16</td><td>4</td><td>plans par ligne</td></tr>
 <tr><td>zx_spectrum / c64</td><td>8×8</td><td>1</td><td>plans séquentiels</td></tr>

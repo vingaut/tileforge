@@ -56,7 +56,7 @@ _LAYOUT_LABELS: dict[str, str] = {
     "seq_planes_bytes": "plans séquentiels (NES, Game Boy)",
     "seq_plane_pairs": "paires de plans séquentielles (PC Engine)",
     "snes_3bpp": "3 plans façon SNES",
-    "nibble": "quartets, 2 pixels par octet (Mega Drive)",
+    "nibble": "quartets, 2 pixels par octet (GBA)",
     "chunky": "pixels indexés",
     "cpc": "entrelacement CPC",
 }
