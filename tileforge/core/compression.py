@@ -741,6 +741,85 @@ def comper(data: bytes, offset: int = 0, max_size: int = 1 << 24) -> bytes:
 
 
 # ---------------------------------------------------------------------------
+# LZSS Technosoft (Thunder Force IV)
+# ---------------------------------------------------------------------------
+
+
+def technosoft_lzss(data: bytes, offset: int = 0, max_size: int = 1 << 22) -> bytes:
+    """Décompresse un flux LZSS Technosoft (Thunder Force IV, 1992).
+
+    Le flux commence par un mot d'indicateurs de 16 bits (petit-boutiste),
+    consommé bit 0 d'abord. Quand les 16 bits sont épuisés, le mot suivant est
+    lu au fil du flux, juste avant la donnée qu'il décrit.
+
+    - ``1`` : octet littéral ;
+    - ``0 1`` : copie longue, distance 13 bits (1 à 8192), longueur 2 à 9 ou
+      étendue sur un octet (0 = fin, 1 = saut) ;
+    - ``0 0`` : copie courte, longueur 2 à 5, distance 1 à 256.
+
+    Source : routine 68000 en ``0x000EBA`` de la ROM, appelée par le chargeur
+    de stage ``0x0040AC``. Le conteneur qui l'accompagne porte le nombre de
+    flux en ``+1`` et leurs offsets 32 bits gros-boutistes en ``+2``.
+    """
+    out = bytearray()
+    pos = offset
+    if pos + 1 >= len(data):
+        raise DecompressionError("flux Technosoft tronqué")
+    flag = data[pos] | (data[pos + 1] << 8)
+    pos += 2
+    bits = 16
+
+    def bit() -> int:
+        nonlocal flag, pos, bits
+        value = flag & 1
+        flag >>= 1
+        bits -= 1
+        if bits == 0:
+            if pos + 1 >= len(data):
+                raise DecompressionError("flux Technosoft tronqué")
+            flag = data[pos] | (data[pos + 1] << 8)
+            pos += 2
+            bits = 16
+        return value
+
+    while True:
+        if bit():
+            if pos >= len(data):
+                raise DecompressionError("littéral Technosoft hors flux")
+            out.append(data[pos])
+            pos += 1
+            continue
+        if bit() == 0:
+            length = ((bit() << 1) | bit()) + 2
+            if pos >= len(data):
+                raise DecompressionError("copie courte Technosoft tronquée")
+            distance = 256 - data[pos]
+            pos += 1
+        else:
+            if pos + 1 >= len(data):
+                raise DecompressionError("copie longue Technosoft tronquée")
+            low, high = data[pos], data[pos + 1]
+            pos += 2
+            distance = 0x10000 - (0xE000 | ((high >> 3) << 8) | low)
+            if high & 7:
+                length = (high & 7) + 2
+            else:
+                if pos >= len(data):
+                    raise DecompressionError("longueur Technosoft tronquée")
+                count = data[pos]
+                pos += 1
+                if count in (0, 1):
+                    return bytes(out)
+                length = count + 1
+        if distance > len(out):
+            raise DecompressionError("référence Technosoft hors tampon")
+        for _ in range(length):
+            out.append(out[-distance])
+        if len(out) > max_size:
+            raise DecompressionError("taille décompressée excessive")
+
+
+# ---------------------------------------------------------------------------
 # Sonic RLE (Mega Drive)
 # ---------------------------------------------------------------------------
 
@@ -1069,6 +1148,10 @@ DECOMPRESSORS: list[Decompressor] = [
                  pokecrystal_lz, "Game Boy",
                  "Littéraux, répétitions, alternances et copies arrière "
                  "inversées : graphismes de Pokémon Crystal."),
+    Decompressor("technosoft_lzss", "LZSS Technosoft (Mega Drive)",
+                 technosoft_lzss, "Mega Drive",
+                 "Thunder Force IV : drapeaux de 16 bits entrelacés, copies "
+                 "courtes 2-5 et longues 13 bits."),
     Decompressor("packbits", "PackBits", packbits, "",
                  "Apple II, Macintosh, Amstrad CPC, Amiga."),
     Decompressor("rle_pairs", "RLE valeur/compte", rle_pairs, "",

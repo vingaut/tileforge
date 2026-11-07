@@ -538,3 +538,59 @@ LZ3_ATTENDU_REFERENCE = bytes.fromhex(
 def test_lz3_vecteur_de_reference():
     """Vecteur produit par snes-squish, décodé par notre implémentation."""
     assert C.lz3(LZ3_VECTEUR_REFERENCE) == LZ3_ATTENDU_REFERENCE
+
+
+# ---------------------------------------------------------------------------
+# LZSS Technosoft (Thunder Force IV)
+# ---------------------------------------------------------------------------
+
+
+def _technosoft_encode(data: bytes) -> bytes:
+    """Encode ``data`` en LZSS Technosoft, littéraux seulement + fin."""
+    out = bytearray(b"\x00\x00")
+    flag_at = 0
+    flag = 0
+    count = 0
+
+    def emit(value: int) -> None:
+        nonlocal flag, count, flag_at
+        if value:
+            flag |= 1 << count
+        count += 1
+        if count == 16:
+            out[flag_at:flag_at + 2] = flag.to_bytes(2, "little")
+            flag = 0
+            count = 0
+            flag_at = len(out)
+            out.extend(b"\x00\x00")
+
+    for byte in data:
+        emit(1)
+        out.append(byte)
+    emit(0)          # copie
+    emit(1)          # longue
+    out.extend(b"\x00\x00\x00")   # distance nulle, longueur 0 -> fin
+    out[flag_at:flag_at + 2] = flag.to_bytes(2, "little")
+    return bytes(out)
+
+
+def test_technosoft_aller_retour():
+    for size in (1, 15, 16, 17, 33, 64):
+        payload = bytes((i * 7 + 3) & 0xFF for i in range(size))
+        assert C.technosoft_lzss(_technosoft_encode(payload)) == payload
+
+
+def test_technosoft_copie_courte():
+    """Deux littéraux, une copie courte (4 octets à distance 2), puis la fin."""
+    flags = 0b10010011      # lit, lit, copie, courte, 1, 0, copie, longue
+    stream = flags.to_bytes(2, "little") + b"AB" + bytes([0xFE]) + b"\x00\x00\x00"
+    assert C.technosoft_lzss(stream) == b"ABABAB"
+
+
+def test_technosoft_refuse_le_tronque():
+    for stream in (b"", b"\x01", b"\xff\xff\x41"):
+        try:
+            C.technosoft_lzss(stream)
+        except C.DecompressionError:
+            continue
+        raise AssertionError("un flux tronqué aurait dû être refusé")

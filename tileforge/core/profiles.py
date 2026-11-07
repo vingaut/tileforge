@@ -121,6 +121,15 @@ BUILTIN_PROFILES: list[GameProfile] = [
         offset=0x3B65A, tile_format="barbarian_st", count=252, per_row=16,
         machine="atari-st", rom_name="BARB.DAT", grid=(2, 4),
         notes="Deuxième banque de sprites.", builtin=True),
+    GameProfile(
+        key="thunder_force_4_hud",
+        name="Thunder Force IV — HUD et explosions (Mega Drive)",
+        offset=0x1BEFB, tile_format="megadrive", compression="technosoft_lzss",
+        count=32, per_row=8, machine="megadrive",
+        rom_name="Thunder Force IV.md", grid=(2, 4),
+        notes="Banque de 32 tuiles (jauges et éclats) décompressée par le LZSS "
+              "Technosoft du conteneur 0x019000, flux 4. La palette du jeu vit "
+              "dans la CRAM (émulateur), pas dans la ROM.", builtin=True),
 ]
 
 

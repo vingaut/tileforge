@@ -245,6 +245,7 @@ TileForge sait les décompresser avant de découper.
 | **Saxman** | Mega Drive | Sonic 2 (musique, pilote sonore) | vecteur officiel |
 | **Comper** | Mega Drive | LZSS sur mots de 16 bits | vecteurs construits |
 | **Sonic RLE** | Mega Drive | Sonic 1/2 (données de niveau) | vecteurs construits |
+| **LZSS Technosoft** | Mega Drive | Thunder Force IV (drapeaux 16 bits entrelacés) | aller-retour + ROM réelle |
 | **Enigma** | Mega Drive | Sonic, Golden Axe, Chaotix (plans de tuiles) | vecteur officiel |
 | **LZSS SNES** (0x100) | Super Nintendo | plans de tuiles, nombreux jeux | vecteurs construits |
 | **LC_LZ2** | Super Nintendo | Super Mario World, Yoshi's Island, Zelda III | vecteurs construits |
