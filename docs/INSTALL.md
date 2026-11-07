@@ -24,6 +24,20 @@ python3 -m venv .venv
 Le cœur (`core`, `detect`, `assemble`, `mcp`) ne dépend ni de Qt ni de
 l'interface.
 
+## Binaire Linux déjà compilé
+
+Un binaire Linux x86_64 est joint à la release GitHub 1.4.1 :
+`tileforge-1.4.1-linux-x86_64.tar.gz` (environ 91 Mo).
+
+```bash
+tar xzf tileforge-1.4.1-linux-x86_64.tar.gz
+cd tileforge-1.4.1-linux-x86_64
+./lancer.sh
+```
+
+L'archive contient `NOTICE.txt` (licences Qt/PySide6 et composants tiers),
+`LICENSE` et la documentation. Aucun BIOS ni ROM n'est inclus.
+
 ## Interface graphique
 
 ```bash

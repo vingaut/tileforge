@@ -45,6 +45,10 @@ firmware](docs/BIOS.md)**, **[connect an LLM](docs/mcp-clients.md)**,
 **[publishing](docs/PUBLISHING.md)**. Libretro cores are downloaded with
 `python tools/fetch_cores.py`; no copyrighted BIOS is bundled.
 
+A Linux x86_64 build is published in the
+[1.4.1 release](https://github.com/vingaut/tileforge/releases/tag/v1.4.1)
+(`tileforge-1.4.1-linux-x86_64.tar.gz`).
+
 ---
 
 ## 2. Quick start — demonstration sheet

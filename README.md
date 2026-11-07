@@ -53,7 +53,9 @@ Lancement direct sur un fichier, ou vérifications :
 ```
 
 Application compilée : voir **[packaging/README.md](packaging/README.md)**
-(Linux, Windows, Android).
+(Linux, Windows, Android). Un binaire Linux x86_64 est publié dans la
+[release 1.4.1](https://github.com/vingaut/tileforge/releases/tag/v1.4.1)
+(`tileforge-1.4.1-linux-x86_64.tar.gz`).
 
 Guides : **[installation détaillée](docs/INSTALL.md)**, **[BIOS et
 firmwares](docs/BIOS.md)**, **[connecter un LLM](docs/mcp-clients.md)**,
