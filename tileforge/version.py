@@ -7,9 +7,9 @@ publié par ``tools/make_update.py``.
 
 from __future__ import annotations
 
-__version__ = "1.4.1"
-VERSION_TUPLE = (1, 4, 1)
-BUILD_DATE = "2026-11-07"
+__version__ = "1.4.2"
+VERSION_TUPLE = (1, 4, 2)
+BUILD_DATE = "2026-11-08"
 APP_NAME = "TileForge"
 APP_ID = "tileforge"
 MIN_PYTHON = (3, 10)
@@ -17,6 +17,20 @@ MIN_PYTHON = (3, 10)
 
 #: Journal des évolutions, du plus récent au plus ancien.
 CHANGELOG: list[dict] = [
+    {
+        "version": "1.4.2",
+        "date": "2026-11-08",
+        "title": "Décodage des tuiles Mega Drive corrigé",
+        "changes": [
+            "Le format de tuiles Mega Drive décode désormais 4 plans, un octet "
+            "par plan et par ligne (bit 7 = pixel de gauche), au lieu de "
+            "2 pixels par octet : les banques Mega Drive ne sortent plus en bruit.",
+            "Le préréglage `megadrive` partage la disposition de la Master "
+            "System ; aller-retour et non-régression couverts par les tests.",
+            "Fixtures de test, outil de calibration, aide intégrée et "
+            "documentation alignés sur l'encodage planaire.",
+        ],
+    },
     {
         "version": "1.4.1",
         "date": "2026-11-08",

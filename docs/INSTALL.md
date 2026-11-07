@@ -26,12 +26,12 @@ l'interface.
 
 ## Binaire Linux déjà compilé
 
-Un binaire Linux x86_64 est joint à la release GitHub 1.4.1 :
-`tileforge-1.4.1-linux-x86_64.tar.gz` (environ 91 Mo).
+Un binaire Linux x86_64 est joint à la release GitHub 1.4.2 :
+`tileforge-1.4.2-linux-x86_64.tar.gz` (environ 91 Mo).
 
 ```bash
-tar xzf tileforge-1.4.1-linux-x86_64.tar.gz
-cd tileforge-1.4.1-linux-x86_64
+tar xzf tileforge-1.4.2-linux-x86_64.tar.gz
+cd tileforge-1.4.2-linux-x86_64
 ./lancer.sh
 ```
 

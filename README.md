@@ -8,9 +8,10 @@ Il charge une planche (PNG ou banque binaire extraite d'une ROM), découpe les
 tuiles, propose un classement d'assemblages automatiques, laisse corriger à la
 souris, produit un atlas et exporte les données pour analyse.
 
-Version **1.4.1** : recherche de graphismes, notation calibrée, cartographie de
-ROM, désassembleurs 6502, Z80, 68000 et 65816, mémoire d'émulateur, interface
-en trois langues.
+Version **1.4.2** : décodage des tuiles Mega Drive corrigé (4 plans, un octet
+par ligne), recherche de graphismes, notation calibrée, cartographie de ROM,
+désassembleurs 6502, Z80, 68000 et 65816, mémoire d'émulateur, interface en
+trois langues.
 
 *[English version](README.en.md)* — dépôt : <https://github.com/vingaut/tileforge>
 
@@ -54,8 +55,8 @@ Lancement direct sur un fichier, ou vérifications :
 
 Application compilée : voir **[packaging/README.md](packaging/README.md)**
 (Linux, Windows, Android). Un binaire Linux x86_64 est publié dans la
-[release 1.4.1](https://github.com/vingaut/tileforge/releases/tag/v1.4.1)
-(`tileforge-1.4.1-linux-x86_64.tar.gz`).
+[release 1.4.2](https://github.com/vingaut/tileforge/releases/tag/v1.4.2)
+(`tileforge-1.4.2-linux-x86_64.tar.gz`).
 
 Guides : **[installation détaillée](docs/INSTALL.md)**, **[BIOS et
 firmwares](docs/BIOS.md)**, **[connecter un LLM](docs/mcp-clients.md)**,

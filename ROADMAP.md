@@ -384,5 +384,6 @@ aucun fichier de jeu.
 | 2026-11-08 | H.1–H.5 : captures synthétiques, planche de démonstration, manifestes cœurs/BIOS, guides d'installation/publication, `MANIFEST.in`, audit des contenus commerciaux. |
 | 2026-11-08 | H.7 : CI complétée (handshake MCP, manifestes, paquet) et `tools/doctor.py` pour vérifier une installation. |
 | 2026-11-08 | 1.4.1 : import d'une ROM ou d'une archive depuis l'accueil, le menu Fichier et la barre d'outils ; l'écran Planche ne met plus Barbarian en avant. |
+| 2026-11-08 | 1.4.2 : correction du format de tuiles Mega Drive — 4 plans, un octet par plan et par ligne (comme la Master System) au lieu de 2 pixels par octet. Les banques Mega Drive ne sortent plus en bruit ; fixtures, calibration et aide alignées. |
 | 2026-11-08 | G.10 : import de dumps mémoire bruts (`--import-memory`). Essai réel avec Hatari 2.6.1 + EmuTOS 1.4 : `A.PRG` charge `BARB.DAT` à 0x36E5C, la banque 1 se retrouve à 0x6A8AE dans la RAM ; le jeu s'arrête ensuite sur un bus error (disquette de démarrage absente), mais le chemin dump → balayage fonctionne. |
 | 2026-11-08 | G.6 : premier cœur réel — Snes9x sur Final Fight, 300 trames. L'hôte lit 128 Ko de WRAM et 64 Ko de VRAM, écrit une capture du plan de Metro City, et le balayage trouve des tuiles 4bpp dans la VRAM (note 0,73 à 0x2C40). |
