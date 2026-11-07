@@ -1,0 +1,72 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  tests:
+    name: Tests (Python ${{ matrix.python }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.10", "3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+
+      - name: Installer les dépendances du cœur
+        run: |
+          python -m pip install --upgrade pip
+          pip install numpy Pillow
+
+      - name: Lancer les tests
+        run: python tests/run_all.py
+
+      - name: Vérifier le serveur MCP
+        run: python tools/mcp_config.py --check
+
+      - name: Vérifier les manifestes
+        run: |
+          python tools/fetch_cores.py --list > /dev/null
+          python tools/check_bios.py --list > /dev/null
+
+  lint:
+    name: Style
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Installer ruff
+        run: pip install ruff
+
+      - name: Vérifier le style
+        run: ruff check tileforge tests tools
+
+  paquet:
+    name: Installation du paquet
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Construire et installer
+        run: |
+          python -m pip install --upgrade pip build
+          python -m build --wheel
+          pip install dist/*.whl
+          python -c "import tileforge; from tileforge.version import __version__; print(__version__)"

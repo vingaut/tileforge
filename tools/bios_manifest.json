@@ -1,0 +1,159 @@
+{
+ "format": "tileforge/bios/1",
+ "note": "BIOS et firmwares attendus par les cœurs. TileForge ne les distribue pas : les fichiers libres sont téléchargeables, les autres doivent être extraits d'un matériel que vous possédez. Vérifiez la législation de votre pays avant toute copie.",
+ "entries": [
+  {
+   "system": "nes",
+   "core": "fceumm",
+   "files": [],
+   "required": false,
+   "status": "none",
+   "note": "Aucun BIOS nécessaire."
+  },
+  {
+   "system": "snes",
+   "core": "snes9x",
+   "files": [],
+   "required": false,
+   "status": "none",
+   "note": "Aucun BIOS nécessaire."
+  },
+  {
+   "system": "megadrive",
+   "core": "picodrive",
+   "files": [],
+   "required": false,
+   "status": "none",
+   "note": "Aucun BIOS nécessaire ; le BIOS TMSS est optionnel."
+  },
+  {
+   "system": "gameboy",
+   "core": "sameboy",
+   "files": [],
+   "required": false,
+   "status": "none",
+   "note": "Aucun BIOS nécessaire ; une boot ROM est optionnelle."
+  },
+  {
+   "system": "gba",
+   "core": "mgba",
+   "files": [
+    "gba_bios.bin"
+   ],
+   "required": false,
+   "status": "optional-copyrighted",
+   "note": "mGBA utilise un BIOS HLE ; un dump de votre GBA est optionnel.",
+   "placement": "system/"
+  },
+  {
+   "system": "mastersystem",
+   "core": "picodrive",
+   "files": [],
+   "required": false,
+   "status": "none",
+   "note": "Aucun BIOS nécessaire pour la plupart des jeux."
+  },
+  {
+   "system": "pcengine",
+   "core": "mednafen_pce_fast",
+   "files": [],
+   "required": false,
+   "status": "none",
+   "note": "Aucun BIOS pour les HuCard ; les CD nécessitent syscard3.pce."
+  },
+  {
+   "system": "atari2600",
+   "core": "stella2014",
+   "files": [],
+   "required": false,
+   "status": "none",
+   "note": "Aucun BIOS nécessaire."
+  },
+  {
+   "system": "zxspectrum",
+   "core": "fuse",
+   "files": [
+    "fuse/48.rom",
+    "fuse/128-0.rom",
+    "fuse/128-1.rom"
+   ],
+   "required": true,
+   "status": "copyrighted",
+   "note": "ROM Amstrad/Sinclair : à extraire d'un Spectrum possédé, ou remplacer par une ROM libre compatible avec Fuse.",
+   "placement": "system/fuse/"
+  },
+  {
+   "system": "amstradcpc",
+   "core": "crocods",
+   "files": [
+    "cpc464.rom",
+    "cpc6128.rom",
+    "cpc_amsdos.rom"
+   ],
+   "required": true,
+   "status": "copyrighted",
+   "note": "ROM Amstrad : à extraire d'un CPC possédé. Vérifiez la licence avant toute redistribution.",
+   "placement": "system/"
+  },
+  {
+   "system": "c64",
+   "core": "vice_x64",
+   "files": [
+    "vice/kernal",
+    "vice/basic",
+    "vice/chargen"
+   ],
+   "required": true,
+   "status": "copyrighted",
+   "note": "ROM Commodore/Cloanto : à extraire d'un C64 possédé, ou utiliser OpenROMs (libre) si le cœur l'accepte.",
+   "placement": "system/"
+  },
+  {
+   "system": "amiga",
+   "core": "puae2021",
+   "files": [
+    "kick34005.A500",
+    "kick40068.A1200"
+   ],
+   "required": true,
+   "status": "copyrighted",
+   "note": "Kickstart Amiga : à extraire d'une Amiga possédée, ou utiliser AROS Kickstart (libre) quand le jeu le permet.",
+   "placement": "system/"
+  },
+  {
+   "system": "atarist",
+   "core": "hatari",
+   "files": [
+    "etos512fr.img"
+   ],
+   "required": false,
+   "status": "free",
+   "note": "EmuTOS est un TOS libre (GPL) ; un TOS Atari original est une alternative copyrightée à extraire d'un ST possédé.",
+   "placement": "system/",
+   "url": "https://sourceforge.net/projects/emutos/files/emutos/1.4/emutos-512k-1.4.zip",
+   "sha256": "6787ef0b2e5f6e372fb50f24ff6594f70416d9613fa98063ea47109b51b32a3b"
+  },
+  {
+   "system": "neogeo",
+   "core": "fbneo",
+   "files": [
+    "neogeo.zip"
+   ],
+   "required": true,
+   "status": "copyrighted",
+   "note": "BIOS Neo Geo : non distribué ; à fournir avec le jeu.",
+   "placement": "system/"
+  },
+  {
+   "system": "pcenginecd",
+   "core": "mednafen_pce_fast",
+   "files": [
+    "syscard3.pce"
+   ],
+   "required": true,
+   "status": "copyrighted",
+   "note": "BIOS CD-ROM² : à extraire d'une console possédée.",
+   "placement": "system/"
+  }
+ ]
+}

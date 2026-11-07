@@ -1,0 +1,10 @@
+{
+  "servers": {
+    "tileforge": {
+      "type": "stdio",
+      "command": "${workspaceFolder}/.venv/bin/python",
+      "args": ["-m", "tileforge", "--mcp"],
+      "cwd": "${workspaceFolder}"
+    }
+  }
+}

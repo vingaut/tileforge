@@ -1,0 +1,80 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tileforge"
+dynamic = ["version"]
+description = "Extraction et reconstruction de graphismes de jeux 8 et 16 bits"
+readme = "README.en.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "vinga" }]
+keywords = [
+    "retrocomputing",
+    "tiles",
+    "sprites",
+    "graphics",
+    "rom",
+    "reverse-engineering",
+    "atari-st",
+    "snes",
+    "megadrive",
+    "amiga",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: X11 Applications :: Qt",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Games/Entertainment",
+    "Topic :: Multimedia :: Graphics :: Editors",
+    "Topic :: Software Development :: Disassemblers",
+]
+dependencies = [
+    "numpy>=1.24",
+    "Pillow>=9.0",
+]
+
+[project.optional-dependencies]
+# L'interface graphique ; le cœur et le serveur MCP fonctionnent sans Qt.
+gui = ["PySide6>=6.5"]
+dev = ["pytest>=8", "ruff>=0.6", "pyinstaller>=6"]
+
+[project.scripts]
+tileforge = "tileforge.main:main"
+tileforge-mcp = "tileforge.mcp.server:main"
+
+[project.urls]
+Homepage = "https://github.com/vingaut/tileforge"
+Issues = "https://github.com/vingaut/tileforge/issues"
+
+[tool.setuptools.dynamic]
+version = { attr = "tileforge.version.__version__" }
+
+[tool.setuptools.packages.find]
+include = ["tileforge*"]
+
+[tool.setuptools.package-data]
+tileforge = ["i18n/*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+exclude = [".venv", ".venv-build", "dist", "build"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "C4", "SIM"]
+ignore = ["E501"]

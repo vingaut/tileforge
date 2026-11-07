@@ -1,0 +1,47 @@
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Construire et publier
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Installer les dépendances
+        run: |
+          python -m pip install --upgrade pip
+          pip install build numpy Pillow
+
+      - name: Vérifier la publication
+        run: python tools/verify_publication.py
+
+      - name: Lancer les tests
+        run: python tests/run_all.py
+
+      - name: Construire les paquets
+        run: python -m build
+
+      - name: Téléverser les artefacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: tileforge-dist
+          path: dist/*
+
+      - name: Créer la release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          generate_release_notes: true

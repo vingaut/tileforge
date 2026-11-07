@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "tileforge": {
+      "command": ".venv/bin/python",
+      "args": ["-m", "tileforge", "--mcp"]
+    }
+  }
+}

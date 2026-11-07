@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=TileForge
+GenericName=Reconstruction de sprites
+Comment=Reconstruire les sprites à partir de planches de tuiles 8/16 bits
+Exec=/opt/tileforge/TileForge %f
+Icon=/opt/tileforge/packaging/icon.png
+Terminal=false
+Categories=Graphics;2DGraphics;Development;
+MimeType=application/json;
+Keywords=sprites;tuiles;tiles;rom;retro;atari;amiga;arcade;
+StartupWMClass=TileForge

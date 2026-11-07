@@ -1,0 +1,78 @@
+{
+  "format": "tileforge/cores/1",
+  "generated": "2026-11-08",
+  "base_url": "https://buildbot.libretro.com/nightly/linux/x86_64/latest",
+  "note": "Cœurs libretro testés avec TileForge. Les binaires ne sont pas redistribués : tools/fetch_cores.py les télécharge depuis le buildbot officiel et vérifie l'empreinte. Les URLs 'latest' peuvent évoluer ; mettez le manifeste à jour après une nouvelle validation.",
+  "cores": [
+    {
+      "key": "fceumm", "name": "FCEUmm", "systems": ["nes"],
+      "file": "fceumm_libretro.so", "sha256": "6a30a7b1c7991800db1ec312263fde47e93d74d9850344864bb92a7c12549dee",
+      "size": 4474744, "license": "GPL-2.0", "source": "https://github.com/libretro/libretro-fceumm"
+    },
+    {
+      "key": "snes9x", "name": "Snes9x", "systems": ["snes"],
+      "file": "snes9x_libretro.so", "sha256": "9b2b6ea9d88f96c156590443ddd05ee56aaf4e495329a889c979921942717a31",
+      "size": 2841720, "license": "Snes9x (non-commercial)", "source": "https://github.com/snes9xgit/snes9x"
+    },
+    {
+      "key": "picodrive", "name": "PicoDrive", "systems": ["megadrive", "mastersystem", "gamegear"],
+      "file": "picodrive_libretro.so", "sha256": "fd4010afa91f69d3c61be49c95e14a5c37117c4d0899d3e593ccc4339c1417d5",
+      "size": 2040336, "license": "GPL-2.0", "source": "https://github.com/irixxxx/picodrive"
+    },
+    {
+      "key": "genesis_plus_gx", "name": "Genesis Plus GX", "systems": ["megadrive", "mastersystem", "gamegear", "sg1000"],
+      "file": "genesis_plus_gx_libretro.so", "sha256": "eda9d0f8299e8e1347e471927edaf00988d73dbed2ea15dcb19ef90b5ddc928c",
+      "size": 12832952, "license": "GPL-3.0", "source": "https://github.com/libretro/Genesis-Plus-GX"
+    },
+    {
+      "key": "sameboy", "name": "SameBoy", "systems": ["gameboy", "gameboycolor"],
+      "file": "sameboy_libretro.so", "sha256": "a82f691a5164aa459283ec02bb4050526f6ebd79b20d2c55f7d23804f9efe4a6",
+      "size": 346744, "license": "MIT", "source": "https://github.com/LIJI32/SameBoy"
+    },
+    {
+      "key": "gambatte", "name": "Gambatte", "systems": ["gameboy", "gameboycolor"],
+      "file": "gambatte_libretro.so", "sha256": "e7d5e5c301ca7ec7ff92f9ef9a4d704b315e80f23607551daf598dac335b27be",
+      "size": 4802872, "license": "GPL-2.0", "source": "https://github.com/libretro/gambatte-libretro"
+    },
+    {
+      "key": "mgba", "name": "mGBA", "systems": ["gba", "gameboy", "gameboycolor"],
+      "file": "mgba_libretro.so", "sha256": "c840f305825d07c9bec7a6ec18841073c4b539fd234f73623474f97c507f1cdc",
+      "size": 3314664, "license": "MPL-2.0", "source": "https://github.com/mgba-emu/mgba"
+    },
+    {
+      "key": "mednafen_pce_fast", "name": "Mednafen PCE Fast", "systems": ["pcengine", "pcenginecd"],
+      "file": "mednafen_pce_fast_libretro.so", "sha256": "3567cfc975e3b2f67e3f2eaa69e77724e31874bb8cfeeb1584e63473556da3ad",
+      "size": 4556424, "license": "GPL-2.0", "source": "https://github.com/libretro/beetle-pce-fast-libretro"
+    },
+    {
+      "key": "stella2014", "name": "Stella 2014", "systems": ["atari2600"],
+      "file": "stella2014_libretro.so", "sha256": "d4ac4e8100e7be8363fc7293c28649f6ed4f4389ccfa20e352be9c244e7c9a47",
+      "size": 3054944, "license": "GPL-2.0", "source": "https://github.com/libretro/stella2014-libretro"
+    },
+    {
+      "key": "fuse", "name": "Fuse", "systems": ["zxspectrum"],
+      "file": "fuse_libretro.so", "sha256": "249f515663d0ff8d118f464c3e61971901ae6d5ce0c2ad8cb0ca19b6649d5f52",
+      "size": 1462600, "license": "GPL-2.0", "source": "https://github.com/libretro/fuse-libretro"
+    },
+    {
+      "key": "crocods", "name": "CrocoDS", "systems": ["amstradcpc"],
+      "file": "crocods_libretro.so", "sha256": "49633246c788c7e13ddc1c840bbd4a30f65ad04e8c3889aca1404100012dfa19",
+      "size": 615696, "license": "GPL-2.0", "source": "https://github.com/libretro/libretro-crocods"
+    },
+    {
+      "key": "vice_x64", "name": "VICE x64", "systems": ["c64"],
+      "file": "vice_x64_libretro.so", "sha256": "670b7f67906a241cf963edc5eefbbb880673019dc4d8ca20875c0aaf253f5908",
+      "size": 3625504, "license": "GPL-2.0", "source": "https://github.com/libretro/vice-libretro"
+    },
+    {
+      "key": "puae2021", "name": "PUAE 2021", "systems": ["amiga"],
+      "file": "puae2021_libretro.so", "sha256": "b20fc9aa54414c7bdf11196b27eec2d54328e79d773ce2f55ab74b641ae3632d",
+      "size": 9533224, "license": "GPL-2.0", "source": "https://github.com/libretro/libretro-uae"
+    },
+    {
+      "key": "hatari", "name": "Hatari", "systems": ["atarist"],
+      "file": "hatari_libretro.so", "sha256": "69bc64ec99813ecd08788d5c1cf58e1830df5c1a6f922239ef38f5da3385ebf6",
+      "size": 20039968, "license": "GPL-2.0", "source": "https://github.com/libretro/hatari"
+    }
+  ]
+}

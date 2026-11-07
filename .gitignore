@@ -1,0 +1,107 @@
+# ---------------------------------------------------------------------------
+# TileForge — fichiers ignorés
+#
+# Le dépôt est destiné à être publié : tout ce qui provient d'un jeu
+# commercial (ROMs, disquettes, graphismes extraits) reste hors du dépôt.
+# Les jeux de données de test sont fabriqués par les tests eux-mêmes.
+# ---------------------------------------------------------------------------
+
+# -- environnements virtuels
+.venv/
+.venv-build/
+venv/
+env/
+
+# -- caches Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.egg-info/
+.eggs/
+
+# -- construction
+build/
+dist/
+packaging/android/.stage/
+packaging/android/wheels/
+
+# -- fichiers temporaires
+*.tmp
+*.log
+*.bak
+*~
+
+# ---------------------------------------------------------------------------
+# Contenus de jeux commerciaux — jamais publiés
+# ---------------------------------------------------------------------------
+
+# disquettes et images de disque Atari ST / Amiga
+*.stx
+*.st
+*.msa
+*.adf
+*.adz
+*.ipf
+
+# ROMs consoles
+*.smc
+*.sfc
+*.nes
+*.unf
+*.gb
+*.gbc
+*.gba
+*.sms
+*.gg
+*.pce
+*.sgx
+*.a26
+*.a78
+*.col
+*.int
+*.vec
+*.smd
+*.gen
+*.32x
+*.neo
+*.rom
+*.bin
+
+# ROMs Mega Drive (extension .md) : motif limité au dossier, pour ne pas
+# avaler README.md et les autres documents Markdown.
+megadrive/
+snes/
+
+# archives de ROMs
+*.zip
+*.7z
+*.rar
+
+# graphismes extraits de jeux commerciaux
+extract/
+graphisme/
+
+# BIOS, firmwares et cœurs libretro téléchargés
+bios/
+system/
+cores/
+tileforge-demo/
+
+# projets et sauvegardes personnelles
+projects/*.json
+!projects/.gitkeep
+*.tileforge.json
+*.autosave.json
+
+# ---------------------------------------------------------------------------
+# Système et éditeurs
+# ---------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp

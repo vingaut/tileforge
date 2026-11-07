@@ -1,0 +1,13 @@
+include LICENSE
+include README.md
+include README.en.md
+include CONTRIBUTING.md
+include ROADMAP.md
+include pyproject.toml
+include .mcp.json
+include .vscode/mcp.json
+include .cursor/mcp.json
+recursive-include docs *.md *.png
+recursive-include tools *.py *.json
+recursive-include tests *.py *.c
+recursive-include tileforge/i18n *.json
