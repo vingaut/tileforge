@@ -454,6 +454,32 @@ Covered machines: NES, Super Nintendo, Mega Drive, Game Boy, Game Boy Advance,
 Master System, PC Engine, ZX Spectrum, Amstrad CPC. ROMs are not copied: only
 the generated images, a bank excerpt and JSON reports are written.
 
+## 14 ter. Case studies — two games extracted with zero human intervention
+
+Two complete extractions were carried out **from a single prompt**, with no
+human action afterwards: no offset picked with the mouse, no palette fixed by
+eye, no sprite cut by hand.
+
+| | **The Legend of Zelda** (NES) | **Project-X** (Amiga) |
+|---|---|---|
+| Input | `.nes` ROM, MMC1, 8 PRG banks, 0 CHR | 4 `.ipf` disk images |
+| Hard parts | offsets, 3 assembly rules, palettes | IPF → MFM → OFS → Imploder → hunk |
+| Output | 15 blocks, 3 rules, 10 palettes, 65 files | 28 files, 31 nested blocks, 10 sheets, 1,043 sprites |
+| TileForge's role | central (scan, banks, atlas) | entry point and format recognition |
+
+The full chain, the verification oracles and the tools used (MCP, REA, rizin,
+capstone, SPS library, Imploder) are described in
+[`docs/ETUDES_DE_CAS.md`](docs/ETUDES_DE_CAS.md) (French).
+
+Follow-up work is listed in
+[`docs/tileforge_upgrade.md`](docs/tileforge_upgrade.md): Amiga disk support,
+decompressors (including **recursive nested detection**), hunk parser,
+**plane-major "screen" mode** next to the "tiles" mode, palette extraction and
+matching, automatic sprite cutting.
+
+> No extracted artwork is published in this repository: the works remain with
+> their rights holders. Only formats, offsets and metrics are documented.
+
 ## 15. Tests
 
 ```bash

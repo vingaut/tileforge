@@ -750,6 +750,33 @@ Advance, Master System, PC Engine, ZX Spectrum, Amstrad CPC. Les ROMs ne sont
 pas copiées : seules les images produites, un extrait de banque et les rapports
 JSON sont écrits.
 
+## 12 ter. Études de cas — deux jeux extraits sans intervention humaine
+
+Deux extractions complètes ont été menées **à partir d'un seul prompt**, sans
+aucune intervention humaine ensuite : ni offset choisi à la souris, ni palette
+corrigée à l'œil, ni sprite découpé à la main.
+
+| | **The Legend of Zelda** (NES) | **Project-X** (Amiga) |
+|---|---|---|
+| Entrée | ROM `.nes` iNES, MMC1, 8 banques PRG, 0 CHR | 4 images disque `.ipf` |
+| Difficultés | offsets, 3 règles d'assemblage, palettes | IPF → MFM → OFS → Imploder → hunk |
+| Résultat | 15 blocs, 3 règles, 10 palettes, 65 fichiers | 28 fichiers, 31 blocs imbriqués, 10 planches, 1 043 sprites |
+| Rôle de TileForge | central (scan, banques, atlas) | point d'entrée et reconnaissance de format |
+
+Le détail de la chaîne, des vérifications et des outils utilisés (MCP, REA,
+rizin, capstone, bibliothèque SPS, Imploder) est dans
+[`docs/ETUDES_DE_CAS.md`](docs/ETUDES_DE_CAS.md).
+
+Ce qui en ressort pour la suite est dans
+[`docs/tileforge_upgrade.md`](docs/tileforge_upgrade.md) : disque Amiga,
+décompresseurs (dont la **détection imbriquée récursive**), parseur hunk,
+**mode « écran » plan-major** à côté du mode « tuiles », extraction et
+appariement de palettes, découpe automatique de sprites.
+
+> Aucun graphisme extrait n'est publié dans ce dépôt : les œuvres restent chez
+> leurs ayants droit. Seuls les formats, les offsets et les métriques sont
+> documentés.
+
 ## 13. Tests
 
 ```bash
