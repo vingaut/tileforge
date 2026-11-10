@@ -64,6 +64,8 @@ def test_configs_de_projet():
 def test_handshake_mcp():
     result = _run("--check")
     assert result.returncode == 0, result.stderr
-    assert "20 outils MCP disponibles" in result.stdout
+    assert "26 outils MCP disponibles" in result.stdout
     assert "tileforge_list_archive" in result.stdout
+    assert "tileforge_open_disk" in result.stdout
+    assert "tileforge_amiga_sprites" in result.stdout
     assert "tileforge_emulator_memory" in result.stdout

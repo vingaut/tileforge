@@ -311,6 +311,38 @@ comment en installer un.
 
 ---
 
+### Phase I — Chaîne Amiga (priorité 2, 1.5.0)
+
+Issue du retour d'expérience Project-X (`docs/tileforge_upgrade.md`). L'objectif
+est de traiter un jeu Amiga de bout en bout sans script externe.
+
+| # | Tâche | État |
+|---|---|---|
+| I.1 | Disques ADF/ADZ/HDF, OFS et FFS, blocs 512/1024 | ✅ `core/amigadisk.py` |
+| I.2 | Tolérance aux checksums invalides et détection Copylock/Rob Northen | ✅ avertissements, lecture poursuivie |
+| I.3 | IPF (CAPS/SPS) et DMS détectés, conversion expliquée | ✅ |
+| I.4 | Décompresseur Imploder (10 signatures, décompression à rebours) | ✅ `core/imploder.py` |
+| I.5 | RNC ProPack méthodes 1 et 2, clé de déchiffrement optionnelle | ✅ `core/rnc.py` |
+| I.6 | Détection imbriquée récursive (profondeur 4) | ✅ `core/nested.py` |
+| I.7 | Parseur hunk : segments, drapeaux de taille, relogements, adresses | ✅ `core/hunk.py` |
+| I.8 | Parseur de listes copper : plans, palette, géométrie | ✅ `core/copper.py` |
+| I.9 | Rendu planaire libre (row/plane-major, 1–8 plans, stride) | ✅ `core/planar.py` |
+| I.10 | Détection de géométrie, du bourrage et densité par plan | ✅ |
+| I.11 | Palettes `0x0RGB` : recherche, score, rejet des fondus, appariement | ✅ |
+| I.12 | Sprites : composantes connexes, fermeture, grille, pré-décalage, animations | ✅ `core/amigasprites.py` |
+| I.13 | Six outils MCP et reconnaissance dans `inspect_file` | ✅ 26 outils |
+| I.14 | Documentation, aide intégrée, attributions, tests | ✅ `docs/AMIGA.md`, 280 tests |
+| I.15 | CrunchMania, Turbo Packer, StoneCracker : décompresseurs | à faire (signatures détectées) |
+| I.16 | Décodeur IPF/MFM natif | à faire (licence SPS) |
+
+**Critère d'acceptation** : une image ADF protégée s'ouvre, ses fichiers
+sortent, un exécutable Imploder est décompressé, son hunk est cartographié, un
+écran plan-major se rend avec la bonne palette et les sprites se découpent —
+sans script externe. Les tests couvrent chaque couche avec des données
+synthétiques.
+
+---
+
 ### Phase H — Publication (priorité 6)
 
 Le dépôt doit être publiable tel quel : aucun contenu de jeu commercial, des
@@ -387,3 +419,6 @@ aucun fichier de jeu.
 | 2026-11-08 | 1.4.2 : correction du format de tuiles Mega Drive — 4 plans, un octet par plan et par ligne (comme la Master System) au lieu de 2 pixels par octet. Les banques Mega Drive ne sortent plus en bruit ; fixtures, calibration et aide alignées. |
 | 2026-11-08 | G.10 : import de dumps mémoire bruts (`--import-memory`). Essai réel avec Hatari 2.6.1 + EmuTOS 1.4 : `A.PRG` charge `BARB.DAT` à 0x36E5C, la banque 1 se retrouve à 0x6A8AE dans la RAM ; le jeu s'arrête ensuite sur un bus error (disquette de démarrage absente), mais le chemin dump → balayage fonctionne. |
 | 2026-11-08 | G.6 : premier cœur réel — Snes9x sur Final Fight, 300 trames. L'hôte lit 128 Ko de WRAM et 64 Ko de VRAM, écrit une capture du plan de Metro City, et le balayage trouve des tuiles 4bpp dans la VRAM (note 0,73 à 0x2C40). |
+
+| 2026-11-10 | Phase I : chaîne Amiga complète — disques ADF/ADZ (OFS/FFS, checksums tolérés), Imploder et RNC, détection imbriquée, hunks, copper, rendu planaire, palettes 0x0RGB, sprites. Six outils MCP (26 au total), 280 tests. |
+| 2026-11-10 | Version 1.5.0 : `docs/AMIGA.md`, aide intégrée, README bilingue, attributions Imploder/RNC. |

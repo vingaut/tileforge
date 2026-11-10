@@ -1042,6 +1042,55 @@ restent à la charge de l'utilisateur. Si aucun cœur n'est trouvé, installez
 RetroArch ou un paquet <code>libretro-*</code>, puis rouvrez le dialogue.</p>
 """),
 
+    ("amiga", "Chaîne Amiga : disques, écrans et sprites", """
+<p>La version 1.5.0 ajoute la chaîne complète pour les jeux Amiga. Elle est
+accessible par le serveur MCP et par le cœur Python ; les fichiers de jeu
+restent à votre charge.</p>
+
+<h3>Ouvrir un disque</h3>
+<p><code>tileforge_open_disk</code> lit les images <b>ADF</b>, <b>ADZ</b> et
+<b>HDF</b> (OFS et FFS, blocs 512 ou 1024) et liste l'arborescence. Les
+checksums invalides ne bloquent pas l'ouverture : ils sont signalés comme
+probable protection <b>Copylock</b>, car une bonne partie du catalogue Amiga
+est protégée. Les images <b>IPF</b> (CAPS/SPS) et <b>DMS</b> sont reconnues et
+expliquées ; il faut les convertir en ADF.</p>
+<p><code>tileforge_extract_disk_file</code> écrit un fichier extrait dans le
+dossier de travail, avec sa taille et les avertissements du volume.</p>
+
+<h3>Décompresser en cascade</h3>
+<p><code>tileforge_decompress_nested</code> reconnaît <b>Imploder</b> (dont la
+signature <code>ATN!</code>), <b>RNC ProPack</b> méthodes 1 et 2, et descend
+récursivement dans les blocs produits (profondeur 4). C'est ce qui débloque les
+planches cachées dans un exécutable recompressé. Les formats reconnus mais non
+décodés (CrunchMania, Turbo Packer) sont listés avec un avertissement.</p>
+
+<h3>Relier le code aux données</h3>
+<p><code>tileforge_amiga_analyze</code> donne la table des <b>hunks</b>
+(segments, relogements, adresse de chargement), les <b>listes copper</b>
+(plans, palette, géométrie) et les blocs imbriqués. Une adresse absolue lue
+dans le code se convertit en offset fichier par
+<code>address_to_offset</code>.</p>
+
+<h3>Voir une image</h3>
+<p><code>tileforge_amiga_screen</code> rend un bitmap planaire en
+<b>row-major</b> ou <b>plane-major</b>, avec largeur, hauteur, plans et pas de
+ligne libres. Sans géométrie, il la détecte par cohérence de voisinage, signale
+les plans vides et le bourrage de fin de ligne (le cas « 256 utiles dans un
+bitmap de 320 »).</p>
+
+<h3>Sortir les sprites</h3>
+<p><code>tileforge_amiga_sprites</code> découpe la planche par composantes
+connexes 8-connexité, avec fermeture morphologique pour ne pas séparer un
+vaisseau de ses flammes. Il détecte la grille, les copies pré-décalées et les
+groupes d'animation, puis écrit une planche PNG RGBA (index 0 transparent).</p>
+
+<h3>Limites</h3>
+<p>IPF et DMS ne sont pas décodés nativement ; CrunchMania, Turbo Packer et
+StoneCracker sont reconnus sans décompresseur. La détection de géométrie
+classe des candidats : sur un motif très répétitif, vérifiez l'aperçu avant de
+conclure. Le guide complet est dans <code>docs/AMIGA.md</code>.</p>
+"""),
+
     ("langues", "Choisir la langue", """
 <p>L'interface existe en <b>français</b>, <b>anglais</b> et <b>allemand</b>.
 <b>Aide ▸ Langue</b> bascule à chaud, sans redémarrer ; le choix est mémorisé.

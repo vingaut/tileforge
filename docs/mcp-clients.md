@@ -19,7 +19,7 @@ cd /path/to/tileforge
 La seconde commande fait un vrai handshake MCP et doit afficher :
 
 ```
-TileForge 1.4.0 — 20 outils MCP disponibles.
+TileForge 1.5.0 — 26 outils MCP disponibles.
   tileforge_inspect_file
   tileforge_list_archive
   ...
@@ -170,7 +170,7 @@ mcpServers:
 
 ## 8. Ce que le modèle peut faire
 
-Les vingt outils couvrent toute la chaîne :
+Les vingt-six outils couvrent toute la chaîne :
 
 | Étape | Outils |
 |---|---|
@@ -182,6 +182,9 @@ Les vingt outils couvrent toute la chaîne :
 | Exporter | `tileforge_save_project`, `tileforge_export_atlas` |
 | Émulation | `tileforge_list_emulator_cores`, `tileforge_emulator_memory` |
 | Désassembler | `tileforge_disassemble` |
+| Amiga — disque | `tileforge_open_disk`, `tileforge_extract_disk_file` |
+| Amiga — compression | `tileforge_decompress_nested` (Imploder, RNC, hunk) |
+| Amiga — image | `tileforge_amiga_screen`, `tileforge_amiga_sprites`, `tileforge_amiga_analyze` |
 
 Chaque outil renvoie du JSON **et le chemin d'un PNG** : le modèle peut ouvrir
 l'aperçu avant de décider. Les chemins de fichiers doivent être **absolus** :
@@ -197,6 +200,10 @@ Exemples de demandes :
 
 > Ouvre la banque, propose un assemblage 2 × 4 des huit premières tuiles,
 > rends-le en PNG et valide-le.
+
+> Ouvre ce disque ADF malgré ses checksums invalides, liste ses fichiers,
+> décompresse les blocs `ATN!` imbriqués et rends l'écran plan-major de
+> 256 × 256 en 5 plans.
 
 ## 9. Dépannage
 

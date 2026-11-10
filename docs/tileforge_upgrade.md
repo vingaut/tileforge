@@ -12,6 +12,14 @@
 > structures et des métriques. Voir la note juridique de
 > [`docs/ETUDES_DE_CAS.md`](ETUDES_DE_CAS.md).
 
+> **État au 10 novembre 2026 (TileForge 1.5.0).** Les itérations 1 à 3 de
+> cette feuille de route sont implémentées : disques ADF/ADZ (OFS/FFS,
+> checksums tolérés), Imploder et RNC, détection imbriquée, hunks, copper,
+> rendu planaire row/plane-major, palettes `0x0RGB`, découpe de sprites. Six
+> outils MCP exposent la chaîne. Restent ouverts : le décodeur IPF/MFM natif,
+> DMS, et les décompresseurs CrunchMania/Turbo Packer/StoneCracker (signatures
+> détectées, blocs signalés). Voir [`AMIGA.md`](AMIGA.md).
+
 ---
 
 ## 0. Résumé exécutif

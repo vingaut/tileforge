@@ -535,7 +535,7 @@ sprite — avec les mêmes fonctions que l'interface.
 
 ```bash
 python -m tileforge --mcp          # JSON-RPC 2.0 sur l'entrée standard
-python tools/mcp_config.py --check # handshake réel : 20 outils attendus
+python tools/mcp_config.py --check # handshake réel : 26 outils attendus
 ```
 
 Le serveur est en **stdio** : c'est le client LLM qui lance la commande. Pour
@@ -571,11 +571,13 @@ passer par son fichier global.
 Guide détaillé, chemins des fichiers de configuration et dépannage :
 [docs/mcp-clients.md](docs/mcp-clients.md).
 
-**20 outils** : `inspect_file`, `list_tile_formats`, `list_systems`,
+**26 outils** : `inspect_file`, `list_tile_formats`, `list_systems`,
 `read_palette`, `list_archive`, `cartography`, `scan_graphics`,
 `list_emulator_cores`, `emulator_memory`, `identify_format`, `disassemble`,
 `preview_tiles`, `open_bank`, `project_info`, `list_tiles`, `auto_assemble`,
-`render_sprite`, `validate_sprite`, `save_project`, `export_atlas`.
+`render_sprite`, `validate_sprite`, `save_project`, `export_atlas`,
+`open_disk`, `extract_disk_file`, `decompress_nested`, `amiga_screen`,
+`amiga_sprites`, `amiga_analyze`.
 
 Chaque outil renvoie du JSON **et le chemin d'un aperçu PNG** : le modèle peut
 regarder l'image avant de décider. Le serveur n'a aucune dépendance externe
@@ -612,6 +614,14 @@ tileforge/
 │   ├── archives.py         lecture des ROMs dans les archives zip/7z
 │   ├── compression.py      Kosinski (+ modulé), Nemesis, Saxman, Enigma,
 │   │                       LC_LZ2, LC_LZ3, LZ77/LZ11, PackBits, RLE, zlib
+│   ├── amigadisk.py        ADF/ADZ/HDF, OFS/FFS, checksums tolérés
+│   ├── imploder.py         Imploder (10 signatures, décompression à rebours)
+│   ├── rnc.py              RNC ProPack méthodes 1 et 2
+│   ├── nested.py           descente récursive dans les formats imbriqués
+│   ├── hunk.py             exécutables hunk Amiga (segments, relogements)
+│   ├── copper.py           listes copper (plans, palette, géométrie)
+│   ├── planar.py           écrans planaires, géométrie, palettes 0x0RGB
+│   ├── amigasprites.py     composantes, grille, pré-décalage, animations
 │   ├── emulation.py        hôte libretro, mémoire d'émulateur, instantanés
 │   ├── disasm6502.py       désassembleur 6502 (NES, C64, Apple II)
 │   ├── disasmz80.py        désassembleurs Z80 et SM83 (Game Boy)
@@ -642,7 +652,7 @@ tileforge/
 │   └── generic.py          PNG, banque brute, atlas
 ├── mcp/
 │   ├── server.py           serveur MCP (JSON-RPC stdio, sans dépendance)
-│   └── tools.py            les 20 outils exposés
+│   └── tools.py            les 26 outils exposés
 └── ui/
     ├── main_window.py      fenêtre, menus, barre d'outils, réglages
     ├── sheet_view.py       écran Planche
@@ -767,11 +777,31 @@ Le détail de la chaîne, des vérifications et des outils utilisés (MCP, REA,
 rizin, capstone, bibliothèque SPS, Imploder) est dans
 [`docs/ETUDES_DE_CAS.md`](docs/ETUDES_DE_CAS.md).
 
-Ce qui en ressort pour la suite est dans
+Ce qui en ressortait pour la suite est dans
 [`docs/tileforge_upgrade.md`](docs/tileforge_upgrade.md) : disque Amiga,
 décompresseurs (dont la **détection imbriquée récursive**), parseur hunk,
 **mode « écran » plan-major** à côté du mode « tuiles », extraction et
 appariement de palettes, découpe automatique de sprites.
+
+## 12 quater. Chaîne Amiga (1.5.0)
+
+La version 1.5.0 implémente cette feuille de route pour l'essentiel :
+
+* **Disques** : ADF/ADZ/HDF, OFS et FFS, checksums invalides tolérés
+  (Copylock), IPF et DMS reconnus et expliqués.
+* **Compression** : Imploder (10 signatures dont `ATN!`) et RNC ProPack
+  méthodes 1 et 2, avec clé optionnelle, puis **descente récursive** dans les
+  blocs imbriqués.
+* **Exécutables** : hunks (segments, relogements, adresse de chargement) et
+  listes copper (plans, palette, géométrie).
+* **Graphismes** : rendu planaire row-major et plane-major, 1 à 8 plans, pas
+  de ligne libre, détection de géométrie et du bourrage, palettes `0x0RGB`
+  appariées par continuité.
+* **Sprites** : composantes connexes, fermeture morphologique, grille,
+  pré-décalage, groupement d'animations et export RGBA.
+
+Ligne de commande : `python tools/amiga.py list|extract|nested|screen|sprites|hunk|copper`.
+Guide complet, API Python et limites : [`docs/AMIGA.md`](docs/AMIGA.md).
 
 > Aucun graphisme extrait n'est publié dans ce dépôt : les œuvres restent chez
 > leurs ayants droit. Seuls les formats, les offsets et les métriques sont
@@ -781,7 +811,7 @@ appariement de palettes, découpe automatique de sprites.
 
 ```bash
 python -m tileforge --selftest
-python tests/run_all.py        # formats de tuiles et décompresseurs
+python tests/run_all.py        # 280 tests, formats de tuiles et chaîne Amiga
 ```
 
 Les tests sont **entièrement synthétiques** : aucune ROM ni image de jeu n'est
@@ -797,6 +827,11 @@ QT_QPA_PLATFORM=offscreen python tools/make_screenshots.py
 
 * L'identification de machine reste indicative : beaucoup de systèmes partagent
   la même résolution.
+* IPF (CAPS/SPS) et DMS sont détectés mais pas décodés ; il faut les convertir
+  en ADF. CrunchMania, Turbo Packer et StoneCracker sont reconnus sans
+  décompresseur.
+* La détection de géométrie planaire classe des candidats ; sur un motif très
+  répétitif, plusieurs offsets peuvent obtenir la même note. Vérifiez l'aperçu.
 * Le décodage des banques suppose des tuiles régulières et non compressées
   (les formats RLE/LZ propres à chaque jeu demandent un plugin).
 * L'inférence de règle a besoin de plusieurs sprites validés dont les tuiles

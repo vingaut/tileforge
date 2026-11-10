@@ -7,9 +7,9 @@ publié par ``tools/make_update.py``.
 
 from __future__ import annotations
 
-__version__ = "1.4.2"
-VERSION_TUPLE = (1, 4, 2)
-BUILD_DATE = "2026-11-08"
+__version__ = "1.5.0"
+VERSION_TUPLE = (1, 5, 0)
+BUILD_DATE = "2026-11-10"
 APP_NAME = "TileForge"
 APP_ID = "tileforge"
 MIN_PYTHON = (3, 10)
@@ -17,6 +17,35 @@ MIN_PYTHON = (3, 10)
 
 #: Journal des évolutions, du plus récent au plus ancien.
 CHANGELOG: list[dict] = [
+    {
+        "version": "1.5.0",
+        "date": "2026-11-10",
+        "title": "Chaîne Amiga complète : disque, Imploder, hunks, écrans et sprites",
+        "changes": [
+            "Disques Amiga : lecture ADF/ADZ/HDF, système de fichiers OFS et "
+            "FFS (blocs 512/1024, table de hachage, extensions), tolérance aux "
+            "checksums invalides et détection de protection Copylock/Rob Northen. "
+            "Les IPF et DMS sont reconnus et expliqués.",
+            "Compression : Imploder (10 signatures dont ATN!) et RNC ProPack "
+            "méthodes 1 et 2, avec clé de déchiffrement optionnelle ; "
+            "décompression récursive des formats imbriqués (profondeur 4).",
+            "Exécutables hunk : table des segments, tailles à drapeaux, "
+            "relogements, adresse de chargement et conversion adresse ↔ offset.",
+            "Graphismes : rendu planaire libre (row-major et plane-major, 1 à "
+            "8 plans, pas de ligne indépendant), détection de géométrie par "
+            "cohérence de voisinage, détection du bourrage de fin de ligne et "
+            "densité par plan.",
+            "Palettes 0x0RGB : recherche, notation, rejet des tables de fondu et "
+            "appariement image ↔ palette par continuité des couleurs.",
+            "Sprites : composantes connexes 8-connexité, fermeture "
+            "morphologique, détection de grille, de pré-décalage et groupement "
+            "d'animation ; export de planche RGBA.",
+            "Six outils MCP : open_disk, extract_disk_file, decompress_nested, "
+            "amiga_screen, amiga_sprites, amiga_analyze (26 au total).",
+            "Documentation : docs/AMIGA.md, feuille de route mise à jour, "
+            "attributions Imploder/RNC, 280 tests.",
+        ],
+    },
     {
         "version": "1.4.2",
         "date": "2026-11-08",

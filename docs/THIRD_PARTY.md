@@ -41,3 +41,25 @@ parties). Elle n'est utilisée que si `py7zr` n'est pas installé.
 `docs/planche_demo.png`, les captures de `docs/` et les fixtures de `tests/`
 sont générées par le projet (voir `tools/make_screenshots.py` et
 `tools/make_fixture.py`). Aucune image de jeu commercial n'est incluse.
+
+## Décodeurs Amiga et fixtures de test
+
+Les décodeurs Imploder et RNC ProPack sont des réimplémentations Python
+écrites pour TileForge, à partir de sources publiques :
+
+| Format | Référence | Licence | Usage |
+|---|---|---|---|
+| Imploder | `im-tools` de Franck Charlet, https://aminet.net/package/util/pack/im-tools | BSD 2-Clause | algorithme de décompression |
+| Imploder | client XAD `DImp` de Stuart Caie, https://www.kyzer.me.uk/pack/xad/ | GPL-2.0 | structure du pied de page (non copié) |
+| RNC ProPack | manuel Rob Northen Computing (1992) et `tobiasvl/rnc_propack` | documentation | format et méthodes |
+| RNC ProPack | `bitplane/propack`, https://github.com/bitplane/propack | WTFPL | implémentation de référence et vecteurs de test |
+
+Les fixtures `tests/fixtures/imploder_data.*` et
+`tests/fixtures/nested_imploder_rnc.*` ont été produites par `im-tools` à
+partir de données synthétiques. Les fixtures `tests/fixtures/pack1.rnc*` et
+`*.expected` viennent de `bitplane/propack`. Aucune ne contient de graphisme
+de jeu commercial.
+
+Les structures AmigaDOS et copper sont décrites par le *Rom Kernel Manual*
+(AmigaDOS, Devices, Graphics Library) ; aucune source copyrightée n'est
+recopiée.

@@ -1097,6 +1097,21 @@ def gzip_stream(data: bytes, offset: int = 0, max_size: int = 1 << 24) -> bytes:
 
 
 # ---------------------------------------------------------------------------
+# Imploder et RNC (Amiga)
+# ---------------------------------------------------------------------------
+
+
+def _imploder(data: bytes, offset: int = 0) -> bytes:
+    from .imploder import decompress as _explode
+    return _explode(data, offset)
+
+
+def _rnc(data: bytes, offset: int = 0) -> bytes:
+    from .rnc import decompress as _unpack
+    return _unpack(data, offset)
+
+
+# ---------------------------------------------------------------------------
 # Registre
 # ---------------------------------------------------------------------------
 
@@ -1158,6 +1173,15 @@ DECOMPRESSORS: list[Decompressor] = [
                  "Paires [valeur][compte] jusqu'à la fin du flux."),
     Decompressor("rle_flagged", "RLE à octet de contrôle", rle_flagged, "",
                  "Bit 7 posé : répétition ; sinon littéraux."),
+    Decompressor("imploder", "Imploder (Amiga)", _imploder,
+                 "Amiga",
+                 "Dix signatures (IMP!, ATN!, BDPI, CHFI, Dupa, EDAM, FLT!, "
+                 "M.H., PARA, RDC9), bloc compressé en fin de fichier et "
+                 "décompression à rebours. Project-X, Team17."),
+    Decompressor("rnc", "RNC ProPack (Amiga, Atari ST, Mega Drive)", _rnc,
+                 "Amiga",
+                 "Rob Northen Computing, méthodes 1 et 2 ; fichiers "
+                 "chiffrés refusés sans clé."),
     Decompressor("zlib", "zlib / DEFLATE", zlib_stream, "",
                  "Quelques homebrews et romhacks."),
     Decompressor("gzip", "gzip", gzip_stream, "", "Archive gzip."),

@@ -183,6 +183,14 @@ magnétiques avec des métadonnées de densité variable.
 (`lab313ru/AmigaImploder`) pour l'Imploder, capstone pour le m68k,
 Python/Pillow/numpy/scipy pour le rendu et la découpe.
 
+> **Mise à jour 1.5.0.** TileForge couvre désormais cette chaîne : lecture
+> ADF/ADZ (OFS/FFS, checksums invalides tolérés), Imploder et RNC, descente
+> récursive dans les blocs imbriqués, hunks, copper, rendu planaire
+> row/plane-major, palettes `0x0RGB` et découpe de sprites. Les outils MCP
+> correspondants sont `open_disk`, `extract_disk_file`, `decompress_nested`,
+> `amiga_screen`, `amiga_sprites` et `amiga_analyze`. L'IPF/MFM et DMS restent
+> à convertir en ADF. Voir [`AMIGA.md`](AMIGA.md).
+
 ---
 
 ## 4. Ce que « zéro intervention humaine » veut dire exactement

@@ -218,6 +218,61 @@ def _build_tools() -> list[Tool]:
         Tool("tileforge_export_atlas",
              "Écrit l'atlas des sprites validés en PNG.",
              _obj({"path": _STR}, ["path"]), T.export_atlas),
+
+        Tool("tileforge_open_disk",
+             "Ouvre une image de disquette Amiga (ADF, ADZ, HDF) et liste son "
+             "arborescence. Les checksums invalides sont signalés mais ne "
+             "bloquent pas l'ouverture : une bonne partie du catalogue Amiga "
+             "est protégée (Copylock). Les IPF/DMS sont détectés et expliqués.",
+             _obj({"path": _STR, "archive_member": _STR}, ["path"]),
+             T.open_disk),
+
+        Tool("tileforge_extract_disk_file",
+             "Extrait un fichier d'un disque Amiga vers le dossier de travail "
+             "et renvoie son chemin, sa taille et ses avertissements.",
+             _obj({"path": _STR, "node_path": _STR, "output": _STR,
+                   "archive_member": _STR}, ["path", "node_path"]),
+             T.extract_disk_file),
+
+        Tool("tileforge_decompress_nested",
+             "Descend récursivement dans les formats imbriqués (Imploder, RNC, "
+             "hunk) : rescane chaque bloc décompressé et écrit les résultats. "
+             "C'est ce qui débloque les planches de sprites cachées dans un "
+             "exécutable recompressé.",
+             _obj({"path": _STR, "offset": _INT, "max_depth": _INT,
+                   "key": _INT, "archive_member": _STR}, ["path"]),
+             T.decompress_nested),
+
+        Tool("tileforge_amiga_screen",
+             "Rend un écran Amiga planaire (row-major ou plane-major) avec "
+             "largeur, hauteur, plans et pas de ligne libres. Sans géométrie, "
+             "la détecte par cohérence de voisinage ; signale les plans vides "
+             "et le bourrage de fin de ligne.",
+             _obj({"path": _STR, "offset": _INT, "width": _INT,
+                   "height": _INT, "planes": _INT, "layout": _STR,
+                   "stride": _INT, "palette_offset": _INT,
+                   "palette_count": _INT, "output": _STR,
+                   "archive_member": _STR}, ["path"]),
+             T.amiga_screen),
+
+        Tool("tileforge_amiga_sprites",
+             "Découpe une planche Amiga en sprites par composantes connexes, "
+             "détecte la grille et les copies pré-décalées, puis écrit une "
+             "planche PNG RGBA (index 0 transparent).",
+             _obj({"path": _STR, "offset": _INT, "width": _INT,
+                   "height": _INT, "planes": _INT, "layout": _STR,
+                   "stride": _INT, "palette_offset": _INT,
+                   "palette_count": _INT, "min_area": _INT,
+                   "close_radius": _INT, "columns": _INT, "output": _STR,
+                   "archive_member": _STR}, ["path"]),
+             T.amiga_sprites),
+
+        Tool("tileforge_amiga_analyze",
+             "Analyse un binaire Amiga : table des hunks (segments, adresses "
+             "de chargement, relogements), listes copper (plans, palette, "
+             "géométrie) et blocs imbriqués à décompresser.",
+             _obj({"path": _STR, "offset": _INT, "archive_member": _STR},
+                  ["path"]), T.amiga_analyze),
     ]
 
 
@@ -297,7 +352,10 @@ class McpServer:
                     "tileforge_scan_graphics sur une ROM inconnue : chaque "
                     "candidat renvoie un aperçu PNG à regarder. "
                     "tileforge_open_bank charge ensuite la banque choisie et "
-                    "tileforge_auto_assemble propose des assemblages."),
+                    "tileforge_auto_assemble propose des assemblages. Pour un "
+                    "jeu Amiga, ouvrez le disque avec tileforge_open_disk, "
+                    "descendez les blocs avec tileforge_decompress_nested, puis "
+                    "rendez l'écran avec tileforge_amiga_screen."),
             }})
             return
 

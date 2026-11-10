@@ -133,3 +133,19 @@ def test_atari_st_barbarian():
         if not np.array_equal(tile.px[..., :3][mask], expected.px[..., :3][mask]):
             wrong += 1
     assert wrong == 0, f"{wrong} tuiles différentes du rendu de référence"
+
+
+def test_amiga_5bpp():
+    """Les tuiles Amiga 5 plans sont planaires, un octet par plan et par ligne."""
+    fmt = FORMATS_BY_KEY["amiga_5bpp"]
+    pixels = _pixels() % 32
+    data = _encode_planar(pixels, planes=5)
+    assert len(data) == 40
+    assert np.array_equal(fmt.decode(data), pixels)
+
+
+def test_amiga_sprite_5pl():
+    """Le sprite 16x16 en 5 plans utilise deux mots par plan et par ligne."""
+    fmt = FORMATS_BY_KEY["amiga_sprite_5pl"]
+    assert fmt.real_bytes == 160
+    assert fmt.stride_bytes == 10

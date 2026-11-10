@@ -9,19 +9,28 @@ Aucune dépendance à Qt : le serveur tourne sans interface graphique.
 
 from __future__ import annotations
 
+import gzip
 import json
 import os
 from pathlib import Path
 
+from ..core import amigadisk as amigadisk_mod
+from ..core import amigasprites as amigasprites_mod
 from ..core import archives as archives_mod
 from ..core import cartography as cartography_mod
 from ..core import compression as compression_mod
+from ..core import copper as copper_mod
 from ..core import disasm6502 as disasm6502_mod
 from ..core import disasm65816 as disasm_mod
 from ..core import disasm68000 as disasm68000_mod
 from ..core import disasmz80 as disasmz80_mod
 from ..core import emulation as emulation_mod
+from ..core import hunk as hunk_mod
 from ..core import identify as identify_mod
+from ..core import imploder as imploder_mod
+from ..core import nested as nested_mod
+from ..core import planar as planar_mod
+from ..core import rnc as rnc_mod
 from ..core import scan as scan_mod
 from ..core.formats import FORMATS, FORMATS_BY_KEY, load_raw_bank
 from ..core.image import load_image, save_image
@@ -88,6 +97,63 @@ def inspect_file(path: str, archive_member: str = "") -> dict:
     info: dict = {"path": os.path.abspath(full), "size": len(data)}
     if summary["archive"]:
         info["archive"] = summary
+    # Une image ADZ est une image ADF compressée en gzip.
+    if data[:2] == b"\x1f\x8b":
+        try:
+            inner = gzip.decompress(data)
+        except OSError:
+            inner = b""
+        if inner[:3] == b"DOS":
+            data = inner
+            info["compressed_size"] = info["size"]
+            info["size"] = len(data)
+            info["format_hint"] = "ADZ"
+    # -- disques Amiga
+    if data[:4] == b"CAPS" or full.lower().endswith(".ipf"):
+        info.update({"kind": "disque", "machine": "Amiga", "format": "IPF",
+                     "warning": "IPF (CAPS/SPS) : convertir en ADF pour "
+                                "l'ouvrir (la bibliothèque SPS n'est pas libre)"})
+        return info
+    if data[:4] == b"DMS!" or full.lower().endswith(".dms"):
+        info.update({"kind": "disque", "machine": "Amiga", "format": "DMS",
+                     "warning": "archive DMS : convertir en ADF (xdms)"})
+        return info
+    if data[:3] == b"DOS" and len(data) >= 901120:
+        entry = {"kind": "disque", "machine": "Amiga",
+                 "format": info.get("format_hint") or "ADF"}
+        try:
+            volume = amigadisk_mod.open_disk(full, member=archive_member)
+            entry.update({"volume": volume.name,
+                          "filesystem": "FFS" if volume.ffs else "OFS",
+                          "file_count": len(volume.files()),
+                          "warnings": volume.warnings,
+                          "files": [f.path for f in volume.files()[:24]]})
+        except Exception as exc:
+            entry["warning"] = str(exc)
+        info.update(entry)
+        return info
+    # -- exécutable Amiga
+    if hunk_mod.is_hunk(data):
+        try:
+            parsed = hunk_mod.parse(data)
+            info.update({"kind": "exécutable", "machine": "Amiga",
+                         "format": "hunk", "segments": len(parsed.segments),
+                         "hunk": parsed.summary()})
+        except Exception as exc:
+            info.update({"kind": "exécutable", "machine": "Amiga",
+                         "format": "hunk", "warning": str(exc)})
+        return info
+    # -- blocs compressés Amiga
+    if imploder_mod.is_imploder(data):
+        info.update({"kind": "binaire", "machine": "Amiga",
+                     "format": "Imploder", "compressions": ["imploder"]})
+        info.update(imploder_mod.inspect(data))
+        return info
+    if rnc_mod.is_rnc(data):
+        info.update({"kind": "binaire", "machine": "Amiga",
+                     "format": "RNC ProPack", "compressions": ["rnc"]})
+        info.update(rnc_mod.inspect(data))
+        return info
     # -- Mega Drive
     if len(data) > 0x120 and data[0x100:0x110] == b"SEGA MEGA DRIVE":
         info.update({"kind": "rom", "machine": "Mega Drive",
@@ -539,3 +605,234 @@ def emulator_memory(core: str, rom: str, frames: int = 600,
             max_candidates=max(1, int(limit)), min_size=512,
             max_size=262144, threshold=0.45)
     return result
+
+
+# ---------------------------------------------------------------------------
+# Amiga : disques, écrans, sprites, exécutables
+# ---------------------------------------------------------------------------
+
+
+def _write_blob(name: str, data: bytes, suffix: str = ".bin") -> str:
+    safe = "".join(c if c.isalnum() or c in "-_." else "_" for c in name)
+    path = work_dir() / f"{safe}{suffix}"
+    path.write_bytes(data)
+    return str(path)
+
+
+def open_disk(path: str, archive_member: str = "") -> dict:
+    """Ouvre une image de disquette Amiga (ADF, ADZ, HDF) et liste ses fichiers.
+
+    Les checksums invalides ne bloquent pas l'ouverture : ils sont signalés,
+    car une bonne partie du catalogue Amiga est protégée (Copylock).
+    """
+    volume = amigadisk_mod.open_disk(path, member=archive_member)
+    return volume.summary(max_depth=4)
+
+
+def extract_disk_file(path: str, node_path: str, output: str = "",
+                      archive_member: str = "") -> dict:
+    """Extrait un fichier d'un disque Amiga vers le dossier de travail."""
+    volume = amigadisk_mod.open_disk(path, member=archive_member)
+    node = volume.find(node_path)
+    data = volume.extract(node)
+    target = os.path.expanduser(output) if output else _write_blob(
+        f"disk_{node.name}", data)
+    if output:
+        Path(target).parent.mkdir(parents=True, exist_ok=True)
+        Path(target).write_bytes(data)
+    return {
+        "path": os.path.abspath(target),
+        "size": len(data),
+        "node": node.path,
+        "warnings": volume.warnings,
+        "head": data[:32].hex(),
+    }
+
+
+def decompress_nested(path: str, offset: int = 0, max_depth: int = 4,
+                      key: int = 0, archive_member: str = "") -> dict:
+    """Descend récursivement dans les formats imbriqués (Imploder, RNC…).
+
+    Chaque bloc décompressé est écrit dans le dossier de travail ; le rapport
+    indique l'offset, la profondeur, le format et les avertissements.
+    """
+    data = _read(path, archive_member)
+    start = max(0, int(offset))
+    blobs = nested_mod.scan_nested(data[start:], max_depth=max_depth, key=key)
+    report = nested_mod.summary(blobs)
+    for index, blob in enumerate(blobs):
+        blob.offset += start
+        if blob.parent is not None:
+            blob.parent += start
+        if blob.data is not None:
+            blob_name = f"nested_{index:02d}_{blob.format}_d{blob.depth}_{blob.offset:08x}"
+            report["blobs"][index]["path"] = _write_blob(blob_name, blob.data)
+    report["source"] = os.path.abspath(os.path.expanduser(path))
+    return report
+
+
+def _resolve_palette(data: bytes, index, palette_offset: int,
+                     palette_count: int, planes: int):
+    """Palette explicite, sinon meilleure palette du fichier, sinon défaut."""
+    if palette_offset >= 0:
+        count = palette_count or (1 << planes)
+        return planar_mod.read_palette(data, palette_offset, count), "explicite"
+    candidates = planar_mod.scan_palettes(data, count=1 << planes, limit=8)
+    if candidates:
+        best, _ = planar_mod.best_palette(index, candidates)
+        if best is not None:
+            return best.palette, f"0x0RGB@{best.offset:#x}"
+    return planar_mod.DEFAULT_PALETTE, "défaut"
+
+
+def amiga_screen(path: str, offset: int = 0, width: int = 0, height: int = 256,
+                 planes: int = 0, layout: str = "", stride: int = 0,
+                 palette_offset: int = -1, palette_count: int = 0,
+                 output: str = "", archive_member: str = "") -> dict:
+    """Rend un écran Amiga planaire (row-major ou plane-major).
+
+    Sans largeur ni nombre de plans, la géométrie est détectée par cohérence
+    de voisinage.  Le rendu est écrit en PNG ; les plans vides sont signalés.
+    """
+    data = _read(path, archive_member)
+    warnings: list[str] = []
+    if width <= 0 or planes <= 0:
+        candidates = planar_mod.detect_geometry(
+            data, start=max(0, offset), height=max(16, height),
+            width=max(0, width), planes=max(0, planes),
+            layout=layout or "", limit=1, step=64, budget=10.0)
+        if not candidates:
+            raise ValueError(
+                "aucune géométrie planaire cohérente trouvée ; préciser "
+                "largeur, hauteur et nombre de plans")
+        best = candidates[0]
+        offset, width, planes = best.offset, best.width, best.planes
+        layout = best.layout
+        stride = best.stride
+        warnings.append(
+            f"géométrie détectée : {width}×{height}, {planes} plans, "
+            f"{layout}, pas {stride} (note {best.score:.2f})")
+    stride = stride or (width + 7) // 8
+    index = planar_mod.decode_indices(data, offset, width, height, planes,
+                                      layout or "row", stride)
+    palette, palette_source = _resolve_palette(
+        data, index, palette_offset, palette_count, planes)
+    density = [float((index >> bit & 1).mean()) for bit in range(planes)]
+    for bit, value in enumerate(density):
+        if value < 1e-4:
+            warnings.append(f"plan {bit} vide : probablement {planes - 1} "
+                            "plans utiles")
+    content_width, strength = planar_mod.detect_padding(index)
+    if strength >= 3.0 and content_width < width:
+        warnings.append(
+            f"bourrage détecté : {content_width} pixels utiles sur {width} "
+            f"(discontinuité ×{strength:.1f})")
+    image = planar_mod.render_screen(data, offset, width, height, planes,
+                                     layout or "row", stride, palette,
+                                     transparent=0)
+    target = os.path.expanduser(output) if output else _preview_path(
+        f"amiga_screen_{offset:08x}")
+    save_image(target, image)
+    return {
+        "path": os.path.abspath(target),
+        "offset": offset,
+        "width": width,
+        "height": height,
+        "planes": planes,
+        "layout": layout or "row",
+        "stride": stride,
+        "palette_source": palette_source,
+        "palette": [[*color] for color in palette.colors],
+        "plane_density": [round(v, 4) for v in density],
+        "content_width": content_width,
+        "warnings": warnings,
+    }
+
+
+def amiga_sprites(path: str, offset: int = 0, width: int = 0,
+                  height: int = 0, planes: int = 0, layout: str = "",
+                  stride: int = 0, palette_offset: int = -1,
+                  palette_count: int = 0, min_area: int = 8,
+                  close_radius: int = 1, columns: int = 8,
+                  output: str = "", archive_member: str = "") -> dict:
+    """Découpe une planche Amiga en sprites (composantes connexes).
+
+    Écrit une planche PNG des sprites extraits et renvoie leur nombre, la
+    grille détectée et les copies pré-décalées repérées.
+    """
+    data = _read(path, archive_member)
+    warnings: list[str] = []
+    if width <= 0 or planes <= 0:
+        candidates = planar_mod.detect_geometry(
+            data, start=max(0, offset), height=max(16, height or 256),
+            width=max(0, width), planes=max(0, planes),
+            layout=layout or "", limit=1, step=64, budget=10.0)
+        if not candidates:
+            raise ValueError(
+                "aucune planche planaire cohérente trouvée ; préciser "
+                "largeur, hauteur et nombre de plans")
+        best = candidates[0]
+        offset, width, height, planes = (best.offset, best.width,
+                                         height or best.height, best.planes)
+        layout, stride = best.layout, best.stride
+        warnings.append(
+            f"géométrie détectée : {width}×{height}, {planes} plans, "
+            f"{layout}, pas {stride}")
+    height = height or 256
+    stride = stride or (width + 7) // 8
+    index = planar_mod.decode_indices(data, offset, width, height, planes,
+                                      layout or "plane", stride)
+    palette, palette_source = _resolve_palette(
+        data, index, palette_offset, palette_count, planes)
+    sprites = amigasprites_mod.components(index, min_area=min_area,
+                                          close_radius=close_radius)
+    grid = amigasprites_mod.detect_grid(index)
+    shifts = amigasprites_mod.detect_preshift(sprites)
+    groups = amigasprites_mod.group_animations(sprites)
+    target = os.path.expanduser(output) if output else _preview_path(
+        f"amiga_sprites_{offset:08x}")
+    written = amigasprites_mod.export_sheet(
+        sprites, palette, target, columns=max(1, int(columns)))
+    return {
+        "path": os.path.abspath(target),
+        "offset": offset,
+        "width": width,
+        "height": height,
+        "planes": planes,
+        "layout": layout or "plane",
+        "stride": stride,
+        "palette_source": palette_source,
+        "sprites": written,
+        "grid": grid.as_dict(),
+        "preshifted": shifts[:32],
+        "animation_groups": [len(g) for g in groups if len(g) > 1][:32],
+        "warnings": warnings,
+        "first_sprites": [s.as_dict() for s in sprites[:16]],
+    }
+
+
+def amiga_analyze(path: str, offset: int = 0, archive_member: str = "") -> dict:
+    """Analyse un binaire Amiga : hunk, listes copper, blocs imbriqués.
+
+    C'est l'outil d'entrée pour un exécutable ou un fichier décompressé :
+    il donne la table des segments, les palettes copper et les formats
+    imbriqués qu'il reste à décompresser.
+    """
+    data = _read(path, archive_member)
+    start = max(0, int(offset))
+    report: dict = {"source": os.path.abspath(os.path.expanduser(path)),
+                    "size": len(data)}
+    if hunk_mod.is_hunk(data, start):
+        try:
+            report["hunk"] = hunk_mod.parse(data, start).summary()
+        except Exception as exc:
+            report["hunk"] = {"error": str(exc)}
+    else:
+        found = hunk_mod.find_hunk(data, start)
+        if found is not None:
+            report["hunk_at"] = found
+    lists = copper_mod.find_lists(data[start:], limit=4)
+    report["copper_lists"] = [item.summary() for item in lists]
+    blobs = nested_mod.scan_nested(data[start:], max_depth=3)
+    report["nested"] = nested_mod.summary(blobs)
+    return report
