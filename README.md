@@ -583,7 +583,10 @@ Chaque outil renvoie du JSON **et le chemin d'un aperçu PNG** : le modèle peut
 regarder l'image avant de décider. Le serveur n'a aucune dépendance externe
 (JSON-RPC écrit à la main) et ne nécessite pas Qt.
 
-Le MCP est une commodité : tout est faisable dans l'interface, sans modèle.
+Le MCP est une commodité : tout le reste est faisable dans l'interface, sans
+modèle. La chaîne Amiga (disques, Imploder, écrans, sprites) est exposée par le
+MCP et par `tools/amiga.py` ; un dialogue dédié dans la fenêtre graphique reste
+à ajouter.
 
 ---
 
