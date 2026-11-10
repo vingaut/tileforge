@@ -8,6 +8,7 @@ include .mcp.json
 include .vscode/mcp.json
 include .cursor/mcp.json
 recursive-include docs *.md *.png
+recursive-include .dsh/skills *.md
 recursive-include tools *.py *.json
 recursive-include tests *.py *.c *.imp *.rnc *.rnc1 *.rnc2 *.raw *.expected
 recursive-include tileforge/i18n *.json

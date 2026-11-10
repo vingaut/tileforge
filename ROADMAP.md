@@ -331,7 +331,7 @@ est de traiter un jeu Amiga de bout en bout sans script externe.
 | I.11 | Palettes `0x0RGB` : recherche, score, rejet des fondus, appariement | ✅ |
 | I.12 | Sprites : composantes connexes, fermeture, grille, pré-décalage, animations | ✅ `core/amigasprites.py` |
 | I.13 | Six outils MCP et reconnaissance dans `inspect_file` | ✅ 26 outils |
-| I.14 | Documentation, aide intégrée, attributions, tests | ✅ `docs/AMIGA.md`, 280 tests |
+| I.14 | Documentation, aide intégrée, attributions, tests | ✅ `docs/AMIGA.md`, 283 tests |
 | I.15 | CrunchMania, Turbo Packer, StoneCracker : décompresseurs | à faire (signatures détectées) |
 | I.16 | Décodeur IPF/MFM natif | à faire (licence SPS) |
 
@@ -420,5 +420,6 @@ aucun fichier de jeu.
 | 2026-11-08 | G.10 : import de dumps mémoire bruts (`--import-memory`). Essai réel avec Hatari 2.6.1 + EmuTOS 1.4 : `A.PRG` charge `BARB.DAT` à 0x36E5C, la banque 1 se retrouve à 0x6A8AE dans la RAM ; le jeu s'arrête ensuite sur un bus error (disquette de démarrage absente), mais le chemin dump → balayage fonctionne. |
 | 2026-11-08 | G.6 : premier cœur réel — Snes9x sur Final Fight, 300 trames. L'hôte lit 128 Ko de WRAM et 64 Ko de VRAM, écrit une capture du plan de Metro City, et le balayage trouve des tuiles 4bpp dans la VRAM (note 0,73 à 0x2C40). |
 
-| 2026-11-10 | Phase I : chaîne Amiga complète — disques ADF/ADZ (OFS/FFS, checksums tolérés), Imploder et RNC, détection imbriquée, hunks, copper, rendu planaire, palettes 0x0RGB, sprites. Six outils MCP (26 au total), 280 tests. |
+| 2026-11-10 | Phase I : chaîne Amiga complète — disques ADF/ADZ (OFS/FFS, checksums tolérés), Imploder et RNC, détection imbriquée, hunks, copper, rendu planaire, palettes 0x0RGB, sprites. Six outils MCP (26 au total), 283 tests. |
 | 2026-11-10 | Version 1.5.0 : `docs/AMIGA.md`, aide intégrée, README bilingue, attributions Imploder/RNC. |
+| 2026-11-10 | Compétence agent `tileforge-rea` (DSH) : playbook TileForge + REA, références outils/systèmes/dépôt, fiches de cas `docs/cases/` (Zelda, Project-X, modèle). |

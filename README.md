@@ -590,6 +590,34 @@ MCP et par `tools/amiga.py` ; un dialogue dédié dans la fenêtre graphique res
 
 ---
 
+## 9 bis. Compétence agent — `tileforge-rea`
+
+Le dépôt embarque une **compétence DSH** pour que l'agent ne reparte pas de
+zéro à chaque jeu : [`.dsh/skills/tileforge-rea/SKILL.md`](.dsh/skills/tileforge-rea/SKILL.md).
+Elle est découverte automatiquement quand le dépôt est ouvert comme espace de
+travail (racine `.dsh/skills`), et un lien global
+`~/.dsh/skills/tileforge-rea` la rend disponible depuis les autres dossiers.
+
+Elle contient :
+
+* le **playbook** en cinq étapes : inventaire → localisation → décodage →
+  vérification → capitalisation ;
+* la **carte des outils** TileForge (26 MCP) et REA (`open_binary`,
+  `binary_overview`, `xrefs`, `search_bytes`, `execute_rizin_command`,
+  `analyze_function`, `decompile_all`…) ;
+* les **pièges par système** (Amiga, Atari ST, NES, SNES, Mega Drive, GB/GBA,
+  arcade) dans `references/platforms.md` ;
+* le **workflow dépôt** pour ajouter un format, un décompresseur ou un outil
+  dans `references/repo-workflow.md` ;
+* les **fiches de cas** déjà traitées dans [`docs/cases/`](docs/cases/README.md)
+  (Zelda NES, Project-X Amiga, modèle).
+
+Après chaque extraction, écrire une fiche dans `docs/cases/` : c'est cette
+mémoire qui évite de refaire l'analyse du disque, du compresseur et des
+palettes au prochain jeu.
+
+---
+
 ## 10. Fichiers
 
 | Extension | Contenu |
@@ -671,6 +699,8 @@ tileforge/
     ├── update_dialog.py    gestionnaire de mises à jour
     ├── widgets.py          canevas zoomable, vignettes, barres de coût
     └── theme.py            feuille de style
+.dsh/skills/tileforge-rea/  compétence agent (playbook TileForge + REA)
+docs/cases/                 fiches de cas par jeu (mémoire des extractions)
 packaging/                  PyInstaller (Linux, Windows) et Android
 tools/make_update.py        construction d'un paquet de mise à jour
 tools/emulator_memory.py    extraction de mémoire libretro en ligne de commande
@@ -814,7 +844,7 @@ Guide complet, API Python et limites : [`docs/AMIGA.md`](docs/AMIGA.md).
 
 ```bash
 python -m tileforge --selftest
-python tests/run_all.py        # 280 tests, formats de tuiles et chaîne Amiga
+python tests/run_all.py        # 283 tests, formats de tuiles et chaîne Amiga
 ```
 
 Les tests sont **entièrement synthétiques** : aucune ROM ni image de jeu n'est

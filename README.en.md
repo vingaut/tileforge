@@ -331,6 +331,25 @@ before deciding. No external dependency, no Qt needed.
 
 ---
 
+## 10 bis. Agent skill — `tileforge-rea`
+
+The repository ships a **DSH skill** so the agent does not start from scratch
+on every game: [`.dsh/skills/tileforge-rea/SKILL.md`](.dsh/skills/tileforge-rea/SKILL.md).
+It is discovered automatically when the repository is the workspace (a
+`.dsh/skills` root), and a global link `~/.dsh/skills/tileforge-rea` makes it
+available from other folders.
+
+It contains the five-step playbook (inventory → locate → decode → verify →
+capitalise), the TileForge MCP / REA tool map, per-system pitfalls, the
+repository workflow for adding formats/decompressors/tools, and the case notes
+in [`docs/cases/`](docs/cases/README.md) (Zelda NES, Project-X Amiga,
+template).
+
+After each extraction, write a case note in `docs/cases/`: that memory is what
+prevents re-analysing the disk, the compressor and the palettes next time.
+
+---
+
 ## 11. Languages
 
 The interface is available in **French, English and German**. Choose it in
@@ -403,6 +422,9 @@ tileforge/
 ├── games/                  Barbarian (STX → FAT12), generic loaders
 ├── mcp/                    MCP server and 26 tools
 └── ui/                     four screens, dialogs, help, SVG icon set, themes
+
+.dsh/skills/tileforge-rea/  agent skill (TileForge + REA playbook)
+docs/cases/                 per-game case notes (extraction memory)
 ```
 
 The core (`core`, `detect`, `assemble`) does not depend on Qt and can be used
@@ -513,7 +535,7 @@ Full guide, Python API and limits: [`docs/AMIGA.md`](docs/AMIGA.md).
 ## 15. Tests
 
 ```bash
-python tests/run_all.py       # 280 tests, no interface required
+python tests/run_all.py       # 283 tests, no interface required
 python -m tileforge --selftest
 python tools/calibrate_score.py    # score calibration report
 python tools/bench_solvers.py      # assembly solver benchmark

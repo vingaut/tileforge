@@ -18,7 +18,7 @@ Le cœur (`core`, `detect`, `assemble`) et le serveur MCP fonctionnent sans Qt.
 Seule l'interface en a besoin : `pip install -e ".[dev]"` suffit pour les tests.
 
 ```bash
-.venv/bin/python tests/run_all.py      # 220 tests, sans interface
+.venv/bin/python tests/run_all.py      # 283 tests, sans interface
 .venv/bin/python -m tileforge          # l'application
 .venv/bin/python -m tileforge --selftest
 ```
@@ -83,7 +83,21 @@ l'aide. C'est le mécanisme prévu pour rendre un jeu reproductible.
 
 ---
 
-## 6. Commits
+## 6. Fiches de cas et compétence agent
+
+Après une extraction, écrire une fiche dans `docs/cases/` avec
+[`docs/cases/TEMPLATE.md`](docs/cases/TEMPLATE.md) : entrée, chaîne suivie,
+offsets, formats, palettes, vérifications et ce qui a résisté. C'est la mémoire
+du projet : elle évite de refaire l'analyse au prochain jeu.
+
+La compétence agent [`tileforge-rea`](.dsh/skills/tileforge-rea/SKILL.md)
+décrit le playbook TileForge + REA, les pièges par système et le workflow
+d'ajout de format/décompresseur/outil. Elle est versionnée avec le dépôt et
+chargée automatiquement par DSH.
+
+---
+
+## 7. Commits
 
 Messages en français, à l'impératif, avec un préfixe :
 
@@ -102,7 +116,7 @@ réglé. Un commit = un sujet.
 
 ---
 
-## 7. Proposer une contribution
+## 8. Proposer une contribution
 
 1. Créez une branche (`feat/nom-court`).
 2. Vérifiez que `python tests/run_all.py` et `ruff check` passent.

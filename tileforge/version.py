@@ -43,7 +43,10 @@ CHANGELOG: list[dict] = [
             "Six outils MCP : open_disk, extract_disk_file, decompress_nested, "
             "amiga_screen, amiga_sprites, amiga_analyze (26 au total).",
             "Documentation : docs/AMIGA.md, feuille de route mise à jour, "
-            "attributions Imploder/RNC, 280 tests.",
+            "attributions Imploder/RNC, 283 tests.",
+            "Compétence agent tileforge-rea (DSH) : playbook TileForge + REA, "
+            "références par système et workflow dépôt ; fiches de cas dans "
+            "docs/cases/ (Zelda, Project-X, modèle) pour ne pas repartir de zéro.",
         ],
     },
     {
